@@ -1,0 +1,107 @@
+{
+  "name": "@frontend/p2p",
+  "version": "0.0.1",
+  "author": "Timo Scholz",
+  "description": "P2P Functionality",
+  "main": "./dist/plugin.cjs.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "unpkg": "./dist/plugin.js",
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/Plugin/",
+    "FrontendP2p.podspec"
+  ],
+  "exports": null,
+  "scripts": {
+    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
+    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
+    "verify:web": "npm run build",
+    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
+    "eslint": "eslint . --ext ts",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
+    "swiftlint": "node-swiftlint",
+    "docgen": "docgen --api P2PProviderPlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^4.0.0",
+    "@capacitor/core": "^4.0.0",
+    "@capacitor/docgen": "^0.0.18",
+    "@capacitor/ios": "^4.0.0",
+    "@ionic/eslint-config": "^0.3.0",
+    "@ionic/prettier-config": "^1.0.1",
+    "@ionic/swiftlint-config": "^1.1.2",
+    "eslint": "^7.11.0",
+    "prettier": "~2.3.0",
+    "prettier-plugin-java": "~1.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.32.0",
+    "swiftlint": "^1.0.1",
+    "typescript": "~4.1.5"
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^4.0.0"
+  },
+  "prettier": "@ionic/prettier-config",
+  "swiftlint": "@ionic/swiftlint-config",
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "repository": {
+    "url": "https://gitlab.veto.party/veto/application/monorepo.git"
+  },
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  },
+  "podspec": {
+    "fileIncludes": {
+    },
+    "ignores": [
+      "swift-log",
+      ""
+    ],
+    "overrides": {
+      "secp256k1.swift": "secp256k1",
+      "swift-metrics": "SwiftMetrics",
+      "swift-log": "Logging",
+      "swiftstate": "SwiftState",
+      "swift-nio": "SwiftNIO",
+      "swift-nio-extras": "SwiftNIOExtras",
+      "swift-atomics": "SwiftAtomics",
+      "cryptoswift": "CryptoSwift",
+      "swift-collections": "OrderedCollections",
+      "swift-protobuf": "SwiftProtobuf"
+    },
+    "nameOverrides": {
+      "swift-bases": "bases",
+      "swift-cid": "CID",
+      "swifteventbus": "SwiftEventBus",
+      "swift-libp2p": "LibP2P",
+      "swift-libp2p-websocket": "LibP2PWebSocket",
+      "swift-libp2p-core": "LibP2PCore",
+      "swift-libp2p-crypto": "LibP2PCrypto",
+      "swift-multiaddr": "Multiaddr",
+      "swift-multibase": "Multibase",
+      "swift-multicodec": "Multicodec",
+      "swift-multihash": "Multihash",
+      "swift-peer-id": "peerId",
+      "swift-varint": "VarInt"
+    }
+  }
+}

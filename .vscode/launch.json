@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug ConsoleKitExample (generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit)",
+            "program": "${workspaceFolder:capacitor-libp2p}/generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit/.build/debug/ConsoleKitExample",
+            "args": [],
+            "cwd": "${workspaceFolder:capacitor-libp2p}/generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit",
+            "preLaunchTask": "swift: Build Debug ConsoleKitExample (generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release ConsoleKitExample (generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit)",
+            "program": "${workspaceFolder:capacitor-libp2p}/generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit/.build/release/ConsoleKitExample",
+            "args": [],
+            "cwd": "${workspaceFolder:capacitor-libp2p}/generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit",
+            "preLaunchTask": "swift: Build Release ConsoleKitExample (generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit)"
+        }
+    ]
+}
