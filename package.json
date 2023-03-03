@@ -73,8 +73,7 @@
     "fileIncludes": {
     },
     "ignores": [
-      "swift-log",
-      ""
+      "swift-log"
     ],
     "overrides": {
       "secp256k1.swift": "secp256k1",
