@@ -68,6 +68,30 @@ const injectPodFn = (__podLines, podTargetLines) => {
     return podLines;
 }
 
+/**
+ * 
+ * @param {string[]} pod 
+ */
+const injectPostinstallScript = (podLines) => {
+
+    const hasPostinstallInstalled = podLines.findIndex((line) => line.trim().startsWith('$postinstall.each'));
+
+    if (hasPostinstallInstalled !== -1) {
+        return podLines;
+    }
+
+    const installPosition = podLines.findIndex((line) => line.trim().startsWith('post_install'));
+    if (installPosition === -1) {
+        throw new Error("Cannot install post install...");
+    }
+
+    const podClone = [...podLines];
+
+    podClone.splice(installPosition + 1, 0, ...['$postinstall.each do |element|', 'element.post_install(installer)', 'end'])
+
+    return podClone;
+}
+
 const injectPodInformation = (pod, podTargetLines) => {
 
     const podLines = pod.split("\n");
@@ -76,7 +100,9 @@ const injectPodInformation = (pod, podTargetLines) => {
 
     const podLinesWithAll = findAndInjectIntoApp(podLinesWithInjectedFn);
 
-    return podLinesWithAll.join("\n");
+    const withInjectedPostinstall = injectPostinstallScript(podLinesWithAll);
+
+    return withInjectedPostinstall.join("\n");
 }
 
 module.exports = injectPodInformation;
