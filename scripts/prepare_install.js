@@ -24,8 +24,8 @@ resolvePackages(resolvedPackagesFile).then(async (packages) => {
 
     const availableIdentities = packages.map(({ identity }) => identity)
         // Filter out packages, that should be ignored.
-        .filter((identity) => [true, undefined].includes(myPackageJSON?.['podspec']?.['ignores']?.includes(identity)))
-        .filter((identity) => Object.keys(myPackageJSON?.['podspec']?.['overrides'] ?? {}).includes(identity));
+        //.filter((identity) => [true, undefined].includes(myPackageJSON?.['podspec']?.['ignores']?.includes(identity)))
+        //.filter((identity) => Object.keys(myPackageJSON?.['podspec']?.['overrides'] ?? {}).includes(identity));
 
     const storedPackages = {};
     console.log("Downloading packages.");
@@ -33,11 +33,13 @@ resolvePackages(resolvedPackagesFile).then(async (packages) => {
         async (packageContent) => {
 
             const { location, identity, state: { revision }} = packageContent;
-
             const targetDir = Path.join(packageDirectory, identity, revision, identity)
-            await checkout(targetDir, location, revision);
+            let innerDependencies = []
 
-            const innerDependencies = await resolvePackages(Path.join(targetDir, 'Package.resolved'));
+            if (!Object.keys(myPackageJSON?.['podspec']?.['overrides'] ?? {}).includes(identity)) {
+                await checkout(targetDir, location, revision);
+                innerDependencies = await resolvePackages(Path.join(targetDir, 'Package.resolved'), packages);
+            }
 
             storedPackages[generatePodSpecId(packageContent)] = {
                 packageContent,
@@ -56,9 +58,9 @@ resolvePackages(resolvedPackagesFile).then(async (packages) => {
     do {
         const packagesWithoutDependencies = storedPackageEntries.filter(([, value]) => value.dependencies.length === 0);
         const packagesWithoutDependenciesNames = packagesWithoutDependencies.map(([name]) => name);
-        
+
         if (packagesWithoutDependencies.length === 0) {
-            console.log(JSON.stringify(storedPackageEntries, undefined, 2));
+            //console.log(JSON.stringify(storedPackageEntries, undefined, 2));
             throw new Error("Should never end up here...");
         }
         const newStoredPackageEntries = storedPackageEntries.filter(([name]) => {
@@ -66,7 +68,7 @@ resolvePackages(resolvedPackagesFile).then(async (packages) => {
         }).map(([name, packages]) => {
             return [name, {
                 ...packages,
-                dependencies: packages.dependencies.filter((dependency) => !packagesWithoutDependenciesNames.includes(dependency['identity']))
+                dependencies: packages.dependencies.filter((dependency) => !packagesWithoutDependenciesNames.includes(generatePodSpecId(dependency)))
             }];
         })
 
@@ -81,9 +83,6 @@ resolvePackages(resolvedPackagesFile).then(async (packages) => {
             })
         }
     } while(storedPackageEntries.length > 0);
-
-    podTargetLines = podTargetLines.sort();
-
     
     const PodFilePath = Path.join(currentIOSPath, 'Podfile');
 

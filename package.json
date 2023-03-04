@@ -70,27 +70,25 @@
     "registry": "http://localhost:4873"
   },
   "podspec": {
-    "fileIncludes": {
+    "manualDependencies": {
+      "Backtrace": ["Backtrace", "CBacktrace"],
+      "Metrics": ["CoreMetrics", "Metrics"],
+      "LibP2P": ["COperatingSystem", "LibP2P"]
     },
-    "ignores": [
-      "swift-log"
-    ],
     "overrides": {
-      "secp256k1.swift": "secp256k1",
-      "swift-metrics": "SwiftMetrics",
-      "swift-log": "Logging",
+      "secp256k1.swift": "secp256k1.swift",
       "swiftstate": "SwiftState",
-      "swift-nio": "SwiftNIO",
+      "swift-nio": ["SwiftNIO", "SwiftNIOWebSocket"],
       "swift-nio-extras": "SwiftNIOExtras",
       "swift-atomics": "SwiftAtomics",
       "cryptoswift": "CryptoSwift",
       "swift-collections": "OrderedCollections",
-      "swift-protobuf": "SwiftProtobuf"
+      "swift-protobuf": "SwiftProtobuf",
+      "swifteventbus": "SwiftEventBus"
     },
     "nameOverrides": {
       "swift-bases": "bases",
       "swift-cid": "CID",
-      "swifteventbus": "SwiftEventBus",
       "swift-libp2p": "LibP2P",
       "swift-libp2p-websocket": "LibP2PWebSocket",
       "swift-libp2p-core": "LibP2PCore",
@@ -99,8 +97,15 @@
       "swift-multibase": "Multibase",
       "swift-multicodec": "Multicodec",
       "swift-multihash": "Multihash",
-      "swift-peer-id": "peerId",
-      "swift-varint": "VarInt"
+      "swift-peer-id": "PeerID",
+      "swift-varint": "VarInt",
+      "swift-crypto": "Crypto",
+      "swift-backtrace": "Backtrace",
+      "routing-kit": "RoutingKit",
+      "async-kit": "AsyncKit",
+      "console-kit": "ConsoleKit",
+      "swift-log": "Logging",
+      "swift-metrics": "Metrics"
     }
   }
 }

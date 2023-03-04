@@ -72,8 +72,6 @@ const injectPodInformation = (pod, podTargetLines) => {
 
     const podLines = pod.split("\n");
 
-    console.log(podLines);
-
     const podLinesWithInjectedFn = injectPodFn(podLines, podTargetLines);
 
     const podLinesWithAll = findAndInjectIntoApp(podLinesWithInjectedFn);

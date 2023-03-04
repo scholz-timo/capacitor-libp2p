@@ -101,8 +101,6 @@ end
 
 #dependencies = $SWTOPODSPEC.toPodSpec(File.join(__dir__, 'ios', 'Plugin.xcworkspace', 'xcshareddata', 'swiftpm'))
 
-puts "hello-world1"
-
 Pod::Spec.new do |s|
   s.name = 'FrontendP2p'  
   s.version = P2PPackage['version']

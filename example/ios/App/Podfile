@@ -8,28 +8,32 @@ use_frameworks!
 # Requires CocoaPods 1.6 or newer
 install! 'cocoapods', :disable_input_output_paths => true
 def frontend_p2p_pods
+pod "Logging", :path => "../../../generated-sources/Logging/32e8d724467f8fe623624570367e3d50c5638e46/Logging/Logging.podspec"
+pod "CoreMetrics", :path => "../../../generated-sources/Metrics/e8bced74bc6d747745935e469f45d03f048d6cbd/Metrics/CoreMetrics.podspec"
+pod "Metrics", :path => "../../../generated-sources/Metrics/e8bced74bc6d747745935e469f45d03f048d6cbd/Metrics/Metrics.podspec"
 pod "Base2", :path => "../../../generated-sources/bases/c84494da575bc776ae64c180af2731471193b812/bases/Base2.podspec"
 pod "Base32", :path => "../../../generated-sources/bases/c84494da575bc776ae64c180af2731471193b812/bases/Base32.podspec"
 pod "Base64", :path => "../../../generated-sources/bases/c84494da575bc776ae64c180af2731471193b812/bases/Base64.podspec"
 pod "Base8", :path => "../../../generated-sources/bases/c84494da575bc776ae64c180af2731471193b812/bases/Base8.podspec"
 pod "BaseX", :path => "../../../generated-sources/bases/c84494da575bc776ae64c180af2731471193b812/bases/BaseX.podspec"
-pod "CID", :path => "../../../generated-sources/CID/b6b54fc371815eaad55e5b2169605b25541841f1/CID/CID.podspec"
-pod "LibP2P", :path => "../../../generated-sources/LibP2P/92c2a57379dab412120582e3ce0d5028006a2de3/LibP2P/LibP2P.podspec"
-pod "LibP2PCore", :path => "../../../generated-sources/LibP2PCore/d81006c9ab8f360ac008135340ecdb72deba554a/LibP2PCore/LibP2PCore.podspec"
-pod "LibP2PCrypto", :path => "../../../generated-sources/LibP2PCrypto/e23533c872accb270d81fcc335d6963ea8e347d2/LibP2PCrypto/LibP2PCrypto.podspec"
-pod "LibP2PWebSocket", :path => "../../../generated-sources/LibP2PWebSocket/5ef7248ec78b38d04e2fd8574db17ac8d8b75044/LibP2PWebSocket/LibP2PWebSocket.podspec"
-pod "Multiaddr", :path => "../../../generated-sources/Multiaddr/8f1f5afb403f7e5ef9010a3ac71fe3bc79adbbdd/Multiaddr/Multiaddr.podspec"
-pod "Multibase", :path => "../../../generated-sources/Multibase/17044546b401c1c3af2f947f64484b1e5f88a5a3/Multibase/Multibase.podspec"
-pod "Multicodec", :path => "../../../generated-sources/Multicodec/741764bba03bd0b8a7399c73aa8a177dd07807be/Multicodec/Multicodec.podspec"
-pod "SwiftEventBus", :path => "../../../generated-sources/SwiftEventBus/a30ff35e616f507d8a8d122dac32a2150371a87e/SwiftEventBus/SwiftEventBus.podspec"
+pod "Backtrace", :path => "../../../generated-sources/Backtrace/f25620d5d05e2f1ba27154b40cafea2b67566956/Backtrace/Backtrace.podspec"
+pod "CBacktrace", :path => "../../../generated-sources/Backtrace/f25620d5d05e2f1ba27154b40cafea2b67566956/Backtrace/CBacktrace.podspec"
 pod "VarInt", :path => "../../../generated-sources/VarInt/3d1e3c9ca4824d5acaf40ff46e96c0b956599271/VarInt/VarInt.podspec"
-pod "async-kit", :path => "../../../generated-sources/async-kit/e2f741640364c1d271405da637029ea6a33f754e/async-kit/async-kit.podspec"
-pod "console-kit", :path => "../../../generated-sources/console-kit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/console-kit/console-kit.podspec"
-pod "peerId", :path => "../../../generated-sources/peerId/aca0c04b4e96ea64a775a68ce4f92c2f920d3c3d/peerId/peerId.podspec"
-pod "routing-kit", :path => "../../../generated-sources/routing-kit/ffac7b3a127ce1e85fb232f1a6271164628809ad/routing-kit/routing-kit.podspec"
-pod "swift-backtrace", :path => "../../../generated-sources/swift-backtrace/f25620d5d05e2f1ba27154b40cafea2b67566956/swift-backtrace/swift-backtrace.podspec"
-pod "swift-crypto", :path => "../../../generated-sources/swift-crypto/75ec60b8b4cc0f085c3ac414f3dca5625fa3588e/swift-crypto/swift-crypto.podspec"
-pod "swift-multihash", :path => "../../../generated-sources/swift-multihash/409e86f2e159e7abb7773bfb0bd830a63f36de14/swift-multihash/swift-multihash.podspec"
+pod "Crypto", :path => "../../../generated-sources/Crypto/75ec60b8b4cc0f085c3ac414f3dca5625fa3588e/Crypto/Crypto.podspec"
+pod "Multicodec", :path => "../../../generated-sources/Multicodec/741764bba03bd0b8a7399c73aa8a177dd07807be/Multicodec/Multicodec.podspec"
+pod "AsyncKit", :path => "../../../generated-sources/AsyncKit/e2f741640364c1d271405da637029ea6a33f754e/AsyncKit/AsyncKit.podspec"
+pod "RoutingKit", :path => "../../../generated-sources/RoutingKit/ffac7b3a127ce1e85fb232f1a6271164628809ad/RoutingKit/RoutingKit.podspec"
+pod "Multibase", :path => "../../../generated-sources/Multibase/17044546b401c1c3af2f947f64484b1e5f88a5a3/Multibase/Multibase.podspec"
+pod "ConsoleKit", :path => "../../../generated-sources/ConsoleKit/447f1046fb4e9df40973fe426ecb24a6f0e8d3b4/ConsoleKit/ConsoleKit.podspec"
+pod "Multihash", :path => "../../../generated-sources/Multihash/409e86f2e159e7abb7773bfb0bd830a63f36de14/Multihash/Multihash.podspec"
+pod "LibP2PCrypto", :path => "../../../generated-sources/LibP2PCrypto/e23533c872accb270d81fcc335d6963ea8e347d2/LibP2PCrypto/LibP2PCrypto.podspec"
+pod "CID", :path => "../../../generated-sources/CID/b6b54fc371815eaad55e5b2169605b25541841f1/CID/CID.podspec"
+pod "Multiaddr", :path => "../../../generated-sources/Multiaddr/8f1f5afb403f7e5ef9010a3ac71fe3bc79adbbdd/Multiaddr/Multiaddr.podspec"
+pod "PeerID", :path => "../../../generated-sources/PeerID/aca0c04b4e96ea64a775a68ce4f92c2f920d3c3d/PeerID/PeerID.podspec"
+pod "LibP2PCore", :path => "../../../generated-sources/LibP2PCore/d81006c9ab8f360ac008135340ecdb72deba554a/LibP2PCore/LibP2PCore.podspec"
+pod "COperatingSystem", :path => "../../../generated-sources/LibP2P/92c2a57379dab412120582e3ce0d5028006a2de3/LibP2P/COperatingSystem.podspec"
+pod "LibP2P", :path => "../../../generated-sources/LibP2P/92c2a57379dab412120582e3ce0d5028006a2de3/LibP2P/LibP2P.podspec"
+pod "LibP2PWebSocket", :path => "../../../generated-sources/LibP2PWebSocket/5ef7248ec78b38d04e2fd8574db17ac8d8b75044/LibP2PWebSocket/LibP2PWebSocket.podspec"
 end
 
 def capacitor_pods
@@ -46,5 +50,8 @@ frontend_p2p_pods
 end
 
 post_install do |installer|
+  $postinstall.each do |element|
+    element.post_install(installer)
+  end
   assertDeploymentTarget(installer)
 end

@@ -6,7 +6,7 @@ const currentPackageJSON = require('../resolvePackageJSON');
 const podspecTemplate = FileSystem.readFileSync(Path.join(__dirname, '..', '..', '..', 'podspec.template')).toString()
 
 const generatePodSpecId = ({identity, state: { revision }}) => {
-    return `${identity}.${revision}`;
+    return `${identity}`;
 }
 
 /**
@@ -40,17 +40,29 @@ const generatePodSpec = (packageContent, podspecSources = {}) => {
         const resultingPodSpecs = [];
 
         FileSystem.readdirSync(possibleOverrideDirectory).forEach((element) => {
-            if (element.endsWith('.podspec')) {
-
-                const dependency = element.substring(0, element.length - ('.podspec'.length))
-                const inFileName = Path.join(possibleOverrideDirectory, element);
-                const outFileName = Path.join(packageContent['targetDir'], element);
-                FileSystem.copyFileSync(inFileName, outFileName)
-                resultingPodSpecs.push({ isFile: true, dependency, podspecPath: outFileName });
+            if (!element.endsWith('.podspec')) {
+                return
             }
-        })
 
-        return resultingPodSpecs;
+            const dependency = element.substring(0, element.length - ('.podspec'.length))
+            const inFileName = Path.join(possibleOverrideDirectory, element);
+            const outFileName = Path.join(packageContent['targetDir'], element);
+            try {
+                FileSystem.unlinkSync(outFileName)
+            } catch (error) {
+                console.warn(error)
+            }
+            
+            FileSystem.copyFileSync(inFileName, outFileName)
+            resultingPodSpecs.push({ isFile: true, dependency, podspecPath: outFileName });
+        })
+        if (currentPackageJSON?.['podspec']?.['manualDependencies']?.[packageContent.packageContent['identity']]) {
+            return currentPackageJSON?.['podspec']?.['manualDependencies']?.[packageContent.packageContent['identity']].map((dependencyName) => {
+                return resultingPodSpecs.find((podSpec) => podSpec.dependency === dependencyName);
+            }).filter(Boolean);
+        }
+
+        return resultingPodSpecs
     }
 
     const podspecPath = Path.join(packageContent['targetDir'], `${packageContent.packageContent['identity']}.podspec`);
@@ -77,11 +89,12 @@ const generatePodSpec = (packageContent, podspecSources = {}) => {
         return fileDependency(packageContent['identity']);
     }
 
+    const allDependencies = packageContent.dependencies.map((poddependency) => resolveDependency(poddependency)).flat();
     const podspec = podspecTemplate
         .replaceAll('PPPNAMEPPP', packageContent.packageContent['identity'])
         .replaceAll('PPPSOURCEPPP', packageContent.packageContent['location'])
-        .replaceAll('PPPDEPENDENCIESPPP', packageContent.dependencies.map((poddependency) => resolveDependency(poddependency)).flat().map((dependency) => `s.dependency ${dependency}`).join("\n"))
-        .replaceAll('PPPSOURCEFINDERPPPP', currentPackageJSON?.['podspec']?.['includes']?.[packageContent['identity']] ?? '"{Sources,Source}/**/*.{swift,h,m,c,cc,mm,cpp}"');
+        .replaceAll('PPPDEPENDENCIESPPP', allDependencies.map((dependency) => `s.dependency ${dependency}`).join("\n"))
+        .replaceAll('PPPSOURCEFINDERPPPP', currentPackageJSON?.['podspec']?.['includes']?.[packageContent.packageContent['identity']] ?? '"{Sources,Source}/**/*.{swift,h,m,c,cc,mm,cpp}"');
 
     FileSystem.writeFileSync(podspecPath, podspec)
 
