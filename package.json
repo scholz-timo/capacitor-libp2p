@@ -48,7 +48,10 @@
     "typescript": "~4.1.5"
   },
   "peerDependencies": {
-    "@capacitor/core": "^4.0.0"
+    "@capacitor/core": "^4.0.0",
+    "libp2p": "^0.42.2",
+    "@libp2p/websockets": "^5.0.4",
+    "@types/ws": "^8.5.4"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
@@ -71,14 +74,26 @@
   },
   "podspec": {
     "manualDependencies": {
-      "Backtrace": ["Backtrace", "CBacktrace"],
-      "Metrics": ["CoreMetrics", "Metrics"],
-      "LibP2P": ["COperatingSystem", "LibP2P"]
+      "Backtrace": [
+        "Backtrace",
+        "CBacktrace"
+      ],
+      "Metrics": [
+        "CoreMetrics",
+        "Metrics"
+      ],
+      "LibP2P": [
+        "COperatingSystem",
+        "LibP2P"
+      ]
     },
     "overrides": {
       "secp256k1.swift": "secp256k1.swift",
       "swiftstate": "SwiftState",
-      "swift-nio": ["SwiftNIO", "SwiftNIOWebSocket"],
+      "swift-nio": [
+        "SwiftNIO",
+        "SwiftNIOWebSocket"
+      ],
       "swift-nio-extras": "SwiftNIOExtras",
       "swift-atomics": "SwiftAtomics",
       "cryptoswift": "CryptoSwift",

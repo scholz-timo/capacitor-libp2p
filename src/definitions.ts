@@ -1,3 +1,7 @@
+
+import { IGroupFactory, IGroup } from './definition/Group/IGroup';
+
 export interface P2PProviderPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  createGroupFactory(options: { name: string }): Promise<IGroupFactory>;
+  createConnectionHandler(options: { groups: IGroup[] }): Promise<{ value: string }>;
 }

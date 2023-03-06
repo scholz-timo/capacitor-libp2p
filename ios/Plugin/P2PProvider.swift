@@ -6,7 +6,9 @@ import LibP2PWebSocket
 
 @objc public class P2PProvider: NSObject {
     @objc public func echo(_ value: String) throws -> String {
-        let app = try Application(.development)
+        var env = try Environment.detect()
+        let app = try Application(env)
+        defer { app.shutdown() }
         
         // lib.security.use(.noise)
         // lib.muxers.use(.mplex)
