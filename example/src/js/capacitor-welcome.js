@@ -44,8 +44,8 @@ const showError = window.error = (error) => {
 
 (async () => {
 
-    const group = await P2PProvider.createGroupFactory({ value: "echo" })
-    const versionHandler = group.generateVersionHandler('1.0.0', (versionHandler) => {
+    const myGroupFactory = await P2PProvider.createGroupFactory({ value: "echo" })
+    const versionHandler = myGroupFactory.generateVersionHandler('1.0.0', (versionHandler) => {
         versionHandler.on(VersionHandlerEventType.all, async (event, content) => {
 
             if (content.stream.getStreamDirection() === StreamDirection.Outbound) {
@@ -64,23 +64,34 @@ const showError = window.error = (error) => {
     })
 
 
-    const connectionHandler = await P2PProvider.createConnectionHandler({ groups: [await group.generate()] });
+    const myGroup = await myGroupFactory.generate();
+    const connectionHandler = await P2PProvider.createConnectionHandler({ groups: [myGroup] });
+    
+    await connectionHandler.start();
+    
+    // On new connection or other events?
+    connectionHandler.on('connection', () => {
+    });
 
     const input = createElement('input', undefined, (content) => content.type = "text");
     const button = createElement('button', 'Start client', (content) => content.type = "button");
 
     const execute = async () => {
-        await connectionHandler.dial(input.value);
-        const stream = await connectionHandler.getStreamForProtocol(input.value, [group, versionHandler]);
-        stream.on(VersionHandlerEventType.all, (event, content) => {
+        const connection = await connectionHandler.dial(input.value);
+        const stream = await connectionHandler.getStreamForProtocol(input.value, { group: myGroup, version: versionHandler }); // Can throw exception, when group(protocol) or version are not found.
+        stream.on(VersionHandlerEventType.data, (event, content) => {
             try {
                 P2PProvider.transformer.string.from(content.stream)
             } catch (error) {
                 showError(error);
             }
         });
+        
+        // Peer discorvery events & others?
+        connection.on('event', () => {
+        });
 
-        await stream.send(P2PProvider.transformer.string.to("hello-world"));
+        await stream.send(P2PProvider.transformer.string.to("hello-world\n"));
     }
 
 
