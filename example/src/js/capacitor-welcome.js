@@ -2,10 +2,15 @@ import { P2PProvider, ProtocolRequestHandlerResponse, StreamDirection, VersionHa
 
 const createElement = (element, content, elementModifier = undefined, parentElement = undefined) => {
     const createdElement = document.createElement(element);
+    
     if (elementModifier) {
         elementModifier(createdElement);
     }
-    createdElement.innerHTML = content;
+    
+    if (content) {
+        createdElement.innerHTML = content;
+    }
+
     (parentElement ?? window.document.body).appendChild(createdElement);
 
     return createdElement;
@@ -57,6 +62,8 @@ const showError = window.error = (error) => {
                     return ProtocolRequestHandlerResponse.StayOpen;
                 case VersionHandlerEventType.data:
                     await content.stream.send(content.stream.getContent());
+                case VersionHandlerEventType.error:
+                    // TODO: Handle your error here.
                 default:
                     return ProtocolRequestHandlerResponse.Close;
             }

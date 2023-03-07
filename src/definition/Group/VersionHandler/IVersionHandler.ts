@@ -1,7 +1,7 @@
 
 import { IProtocolRequestHandler } from '../../Protocol/IProtocolRequestHandler';
 import { VersionHandlerEventType } from './enum/VersionHandlerEventType';
-import { VersionHandlerEvent } from './VersionHandlerEvents';
+import { VersionHandlerEvent } from './VersionHandlerEvent';
 
 export interface IVersionHandler {
     on<T extends VersionHandlerEventType>(event: T, impl: IProtocolRequestHandler<VersionHandlerEvent<T>>): IVersionHandler;

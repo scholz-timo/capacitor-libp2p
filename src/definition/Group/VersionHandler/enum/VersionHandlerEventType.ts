@@ -4,5 +4,5 @@ export enum VersionHandlerEventType {
     data   = 0b0100,
     closed = 0b0010,
     error  = 0b0001,
-    all    = 0b1111
+    all    = 0b1111,
 }

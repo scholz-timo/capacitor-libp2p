@@ -3,7 +3,6 @@ import { ProtocolRequestHandlerResponse } from "./enum/ProtocolRequestHandlerRes
 
 export interface IProtocolRequestHandlerObj {
     readonly stream: IProtocolRequestStream;
-    
 }
 
 export type IProtocolRequestHandler<Event> = (event: Event, content: IProtocolRequestHandlerObj) => ProtocolRequestHandlerResponse;
