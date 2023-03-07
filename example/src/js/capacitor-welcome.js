@@ -74,13 +74,13 @@ const showError = window.error = (error) => {
         const stream = await connectionHandler.getStreamForProtocol(input.value, [group, versionHandler]);
         stream.on(VersionHandlerEventType.all, (event, content) => {
             try {
-                P2PProvider.transformers.string.from(content.stream)
-            catch (error) {
+                P2PProvider.transformer.string.from(content.stream)
+            } catch (error) {
                 showError(error);
             }
         });
 
-        await stream.send(P2PProvider.transformers.string.to("hello-world"));
+        await stream.send(P2PProvider.transformer.string.to("hello-world"));
     }
 
 
