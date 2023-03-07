@@ -2,7 +2,7 @@ import { P2PProvider, ProtocolRequestHandlerResponse, StreamDirection, VersionHa
 
 const createElement = (element, content, elementModifier = undefined, parentElement = undefined) => {
     const createdElement = document.createElement(element);
-    
+
     if (elementModifier) {
         elementModifier(createdElement);
     }
@@ -16,9 +16,6 @@ const createElement = (element, content, elementModifier = undefined, parentElem
     return createdElement;
 }
 
-
-let parentErrorElement = undefined;
-
 const errorToString = (error) => {
     if (error.stack) {
         return `${error.toString()} \n\n ${error.stack.toString()}`;
@@ -27,27 +24,50 @@ const errorToString = (error) => {
     return error.toString();
 }
 
-const showError = window.error = (error) => {
-    if (!parentErrorElement) {
-        parentErrorElement = createElement('div', '', (modifier) => {
-            modifier.style.backgroundColor = 'red';
-            modifier.style.color = 'white';
-            modifier.style.display = "flex"
-            modifier.style.flexDirection = "column";
-        })
-    }
+
+let parentLogElement = undefined;
+const ensureParentLogElement = () => {
+    parentLogElement ||= createElement('div', '', (modifier) => {
+        modifier.style.width = "100%";
+        modifier.style.display = "flex";
+        modifier.style.flexDirection = "column";
+    });
+
+    return parentLogElement;
+}
+
+const showError = (error) => {
 
     createElement('code', errorToString(error), (element) => {
+        element.style.display = "block";
+        element.style.width = "100%";
+        element.style.color = 'white';
+        element.style.borderRadius = '10px';
+        element.style.backgroundColor = 'red';
         element.style.whiteSpace = "pre";
         element.style.borderBottom = "1px solid black";
-    }, parentErrorElement);
+    }, ensureParentLogElement());
 
     console.trace();
     console.error("error: ", error);
 }
 
+const showMessage = (message) => {
+    createElement('code', message, (element) => {
+        element.style.display = "block";
+        element.style.width = "100%";
+        element.style.borderRadius = '10px';
+        element.style.whiteSpace = "pre";
+        element.style.backgroundColor = 'grey';
+        element.style.color = "black";
+        element.style.borderBottom = "1px solid black";
+    })
+}
+
 
 (async () => {
+
+    showMessage("Initializing modules...");
 
     const myGroupFactory = await P2PProvider.createGroupFactory({ value: "echo" })
     const versionHandler = myGroupFactory.generateVersionHandler('1.0.0', (versionHandler) => {
@@ -71,9 +91,12 @@ const showError = window.error = (error) => {
     })
 
 
+    showMessage("Generating group...");
     const myGroup = await myGroupFactory.generate();
+    showMessage("Creating connection handler...");
     const connectionHandler = await P2PProvider.createConnectionHandler({ groups: [myGroup] });
     
+    showMessage("Starting connection handler...");
     await connectionHandler.start();
     
     // On new connection or other events?
@@ -84,11 +107,12 @@ const showError = window.error = (error) => {
     const button = createElement('button', 'Start client', (content) => content.type = "button");
 
     const execute = async () => {
+        showMessage(`Trying to connect to "${input.value}"`);
         const connection = await connectionHandler.dial(input.value);
         const stream = await connectionHandler.getStreamForProtocol(input.value, { group: myGroup, version: versionHandler }); // Can throw exception, when group(protocol) or version are not found.
         stream.on(VersionHandlerEventType.data, (event, content) => {
             try {
-                P2PProvider.transformer.string.from(content.stream)
+                showMessage(`Got response from "{${content.source.address}}" value: "${P2PProvider.transformer.string.from(content.stream)}"`);
             } catch (error) {
                 showError(error);
             }
@@ -109,7 +133,4 @@ const showError = window.error = (error) => {
             showError(error);
         }
     });
-})().catch((error) => {
-    showError(error);
-});
-
+})().catch(showError);
