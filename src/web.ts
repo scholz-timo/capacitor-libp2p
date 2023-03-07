@@ -8,7 +8,9 @@ export class P2PProviderWeb extends WebPlugin implements P2PProviderPlugin {
     throw new Error('Method not implemented.');
   }
 
-  readonly packageSeparator = {}
+  readonly packageSeparator = {
+    delimiter: (_value: Uint8Array) => { throw new Error("Method not implemented.") }
+  }
   readonly transformer = {
     string: {
       to: () => {throw new Error("Method not implemented.")},
