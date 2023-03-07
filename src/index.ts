@@ -7,4 +7,8 @@ const P2PProvider = registerPlugin<P2PProviderPlugin>('P2PProvider', {
 });
 
 export * from './definitions';
+export * from './definition/Group/VersionHandler/enum/VersionHandlerEventType';
+export * from './definition/Protocol/enum/ProtocolRequestHandlerResponse';
+export * from './definition/Protocol/enum/StreamDirection';
+
 export { P2PProvider };

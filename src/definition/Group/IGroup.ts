@@ -4,16 +4,14 @@ interface BasicGroupConfiguration {
     version: string;
 
     /** TODO: Decide for structure... */
-    handlers?: any[];
+    handlers: IVersionHandler[];
 }
 
 export interface IGroup {}
 
 export interface IGroupFactory {
     generateVersionHandler(version: BasicGroupConfiguration): IVersionHandler;
-    generateVersionHandler(version: BasicGroupConfiguration, factory: (versionHandler: IVersionHandler) => any): IGroupFactory;
+    generateVersionHandler(version: BasicGroupConfiguration, initializer: (versionHandler: IVersionHandler) => any|Promise<any>): IGroupFactory;
 
-
-
-    generate(): IGroup;
+    generate(): Promise<IGroup>;
 }

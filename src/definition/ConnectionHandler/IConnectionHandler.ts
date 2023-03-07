@@ -7,6 +7,6 @@ export interface IConnectionHandler {
 
     dial(address: string): Promise<IConnection>;
     hangUp(address: string): Promise<void>;
-    getMultiAddresses(): string[];
+    getAddresses(): string[];
     getStreamForProtocol(address: string, protocol: string): any;
 }
