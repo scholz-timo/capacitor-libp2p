@@ -72,11 +72,15 @@ const showError = window.error = (error) => {
     const execute = async () => {
         await connectionHandler.dial(input.value);
         const stream = await connectionHandler.getStreamForProtocol(input.value, [group, versionHandler]);
-        stream.on(VersionHandlerEventType.all, () => {
-
+        stream.on(VersionHandlerEventType.all, (event, content) => {
+            try {
+                P2PProvider.transformers.string.from(content.stream)
+            catch (error) {
+                showError(error);
+            }
         });
 
-        await stream.send("hello-world");
+        await stream.send(P2PProvider.transformers.string.to("hello-world"));
     }
 
 
