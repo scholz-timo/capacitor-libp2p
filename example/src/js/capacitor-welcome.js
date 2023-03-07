@@ -53,18 +53,14 @@ const showError = window.error = (error) => {
             }
 
             switch(event.type) {
-                case VersionHandlerEventType.closed:
-                case VersionHandlerEventType.error:
-                    return ProtocolRequestHandlerResponse.Close;
                 case VersionHandlerEventType.ready:
                     return ProtocolRequestHandlerResponse.StayOpen;
                 case VersionHandlerEventType.data:
                     await content.stream.send(content.stream.getContent());
+                default:
                     return ProtocolRequestHandlerResponse.Close;
             }
-
-            // Should never end up here, since all cases are handled. (its a binary mask and all just resembles all the options)
-        })
+        }, P2PProvider.packageSeparator.Delimiter("\n"))
     })
 
 
