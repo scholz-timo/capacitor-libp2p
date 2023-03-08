@@ -1,10 +1,15 @@
 
-import { StreamEventType } from './enum/StreamEventType';
-import { StreamEvent } from './StreamEvent';
+import { IEventListener, ReverseMap } from '../../EventListener/IEventListener';
+import { StreamEventType } from './event/enum/StreamEventType';
 
-export interface IStream {
-    on<EventType extends StreamEventType>(event: EventType, callback: StreamEvent<EventType>): IStream;
-    off<EventType extends StreamEventType>(event: EventType, callback: StreamEvent<EventType>): IStream;
+import { StreamDataEvent } from  "./event/SteamDataEvent";
+import { StreamErrorEvent } from "./event/SteamErrorEvent";
+import { StreamClosedEvent } from  "./event/StreamClosedEvent";
 
+export interface IStream extends IEventListener<ReverseMap<StreamEventType>, {
+    [StreamEventType.data]: StreamDataEvent,
+    [StreamEventType.closed]: StreamClosedEvent,
+    [StreamEventType.error]: StreamErrorEvent
+}> {
     close(): Promise<void>;
 }
