@@ -1,0 +1,4 @@
+
+interface WithPeerInformation {
+    address: string;
+}
