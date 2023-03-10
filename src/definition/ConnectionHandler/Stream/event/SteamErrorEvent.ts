@@ -1,8 +1,8 @@
 import { EventStructure } from "../../../EventListener/IEventListener";
 import { StreamEventType } from "./enum/StreamEventType";
-import { EventWithAddress } from "./WithAddress";
-import { EventWithData } from "./WithData";
+import { WithAddress } from "../../../WithAddress";
+import { WithData } from "../../../WithData";
 
-export interface StreamErrorEvent extends EventStructure<StreamEventType.error>, EventWithAddress, EventWithData<Uint8Array|undefined> {
+export interface StreamErrorEvent extends EventStructure<StreamEventType.error>, WithAddress, WithData<Uint8Array|undefined> {
 
 }

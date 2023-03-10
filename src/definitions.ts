@@ -4,7 +4,9 @@ import { IConnectionHandler } from './definition/ConnectionHandler/IConnectionHa
 import { IPackageSeparatorGroup } from './definition/PackageSeparator/IPackageSeparator';
 import { ITransformerGroup } from './definition/Tranformer/ITransformer';
 
-
+/**
+ * The P2P-Provider plugin interface.
+ */
 export interface P2PProviderPlugin {
   /**
    * Create a group factory.

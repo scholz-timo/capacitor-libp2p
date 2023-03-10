@@ -2,14 +2,18 @@ import { IVersionHandler } from './VersionHandler/IVersionHandler';
 
 interface BasicGroupConfiguration {
     version: string;
-
-    /** TODO: Decide for structure... */
-    handlers: IVersionHandler[];
 }
 
-export interface IGroup {}
+export interface IGroup {
+}
 
+/**
+ * GroupFactory interface.
+ * 
+ * Uses the factory pattern to create groups.
+ */
 export interface IGroupFactory {
+
     /**
      * Generates a version handler and attaches it to the group factory.
      * 

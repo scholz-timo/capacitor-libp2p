@@ -20,7 +20,7 @@ export class P2PProviderWeb extends WebPlugin implements P2PProviderPlugin {
     }
   }
 
-  createGroupFactory(_options: { name: string; }): Promise<IGroupFactory> {
+  createGroupFactory(_name: string): Promise<IGroupFactory> {
     throw new Error('Method not implemented.');
   }
 }

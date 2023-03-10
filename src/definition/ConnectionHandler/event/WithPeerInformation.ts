@@ -1,4 +1,7 @@
+import { WithAddress } from "../../WithAddress";
 
-interface WithPeerInformation {
-    address: string;
+/**
+ * Generic interface that contains all the 
+ */
+export interface WithPeerInformation extends WithAddress {
 }
