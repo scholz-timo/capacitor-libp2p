@@ -9,6 +9,14 @@ import { ConnectionHandlerStatus } from './ConnectionHandlerStatus';
 import { IGroup } from "../Group/IGroup";
 import { IVersionHandler } from "../Group/VersionHandler/IVersionHandler";
 
+
+export type IConnectionHandlerEventTypes = ReverseMap<ConnectionHandlerEventType>;
+export type ConnectionHandlerEventStructure = {
+    [ConnectionHandlerEventType.peer_connect]: [ConnectionHandlerPeerConnectEvent],
+    [ConnectionHandlerEventType.peer_disconnect]: [ConnectionHandlerPeerDisconnectEvent]
+};
+
+
 /**
  * The connection handler.
  * Handles incoming and outgoing connections, if supported.
@@ -17,10 +25,7 @@ import { IVersionHandler } from "../Group/VersionHandler/IVersionHandler";
  *  - ConnectionHandlerEventType.peer_connect
  *  - ConnectionHandlerEventType.peer_disconnect
  */
-export interface IConnectionHandler extends IEventListener<ReverseMap<ConnectionHandlerEventType>, {
-    [ConnectionHandlerEventType.peer_connect]: [ConnectionHandlerPeerConnectEvent],
-    [ConnectionHandlerEventType.peer_disconnect]: [ConnectionHandlerPeerDisconnectEvent]
-}> {
+export interface IConnectionHandler extends IEventListener<IConnectionHandlerEventTypes, ConnectionHandlerEventStructure> {
 
     /**
      * Starts the connection.

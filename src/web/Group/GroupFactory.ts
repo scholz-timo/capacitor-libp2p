@@ -23,7 +23,7 @@ export class GroupFactory implements IGroupFactory {
         if (initializer) {
             this.versionHandlers[version] = new Promise(async (resolve, reject) => {
                 try {
-                    await initializer(versionHandler);
+                    await initializer(versionHandler as any);
                     resolve(versionHandler);
                 } catch (error) {
                     reject(error);
@@ -33,7 +33,7 @@ export class GroupFactory implements IGroupFactory {
         }
 
         this.versionHandlers[version] = versionHandler;
-        return versionHandler;
+        return versionHandler as any;
     }
 
     async generate(): Promise<IGroup> {

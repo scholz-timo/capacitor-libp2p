@@ -1,7 +1,7 @@
-import { IVersionHandler, IVersionHandlerEventTypes, VersionHandlerEventStructure } from "../../../definition/Group/VersionHandler/IVersionHandler";
+import { IVersionHandlerEventTypes, VersionHandlerEventStructure } from "../../../definition/Group/VersionHandler/IVersionHandler";
 import { EventListener } from "../../EventListener/EventListener";
 
-export class VersionHandler extends EventListener<IVersionHandlerEventTypes, VersionHandlerEventStructure> implements IVersionHandler {
+export class VersionHandler extends EventListener<IVersionHandlerEventTypes, VersionHandlerEventStructure> {
     constructor(
         public version: string
     ) {

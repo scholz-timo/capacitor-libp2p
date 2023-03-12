@@ -4,7 +4,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "inlineSources": true,
-    "lib": ["dom", "es2017", "esnext.weakref"],
+    "lib": ["dom", "es2017", "esnext.weakref", "es2019.array", "es2019.object"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,

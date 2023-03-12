@@ -31,12 +31,12 @@ export interface P2PProviderPlugin {
    * 
    * Package separators are used to separate/join packages into group(s)
    */
-  packageSeparator: IPackageSeparatorGroup;
+  ensurePackageSeparator(): Promise<IPackageSeparatorGroup>;
 
   /**
    * A static object that contains different default implementations of the "transformer".
    * 
    * A transformer is used to transform data from/to UInt8Array
    */
-  transformer: ITransformerGroup; 
+  ensureTransformer(): Promise<ITransformerGroup>;
 }

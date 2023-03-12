@@ -69,6 +69,9 @@ const showMessage = (message) => {
 
     showMessage("Initializing modules...");
 
+    const transformers = await P2PProvider.ensureTransformer();
+    const separators = await P2PProvider.ensurePackageSeparator();
+
     // Host side
     // Create a group factory for the "echo" protocol.
     const myGroupFactory = await P2PProvider.createGroupFactory({ value: "echo" })
@@ -100,7 +103,7 @@ const showMessage = (message) => {
                 default:
                     return ProtocolRequestHandlerResponse.Close;
             }
-        }, P2PProvider.packageSeparator.Delimiter("\n")) // Call data event on "\n" in packets (Split them up or join them so that they end with "\n")
+        }, separators.delimiter(transformers.string.toUInt8("\n"))) // Call data event on "\n" in packets (Split them up or join them so that they end with "\n")
     })
 
     showMessage("Generating group...");
@@ -150,7 +153,7 @@ const showMessage = (message) => {
         //connection.on('event', () => {
         //});
         // Tranform string to binary representation(UInt8Array) and send it.
-        await stream.send(P2PProvider.transformer.string.to("hello-world\n"));
+        await stream.send(P2PProvider.transformer.stringValue.to("hello-world\n"));
     }
 
 
