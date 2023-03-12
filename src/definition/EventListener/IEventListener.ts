@@ -1,6 +1,6 @@
 import { Drop, Concat, LongestTuple, CompareLength, Append } from 'typescript-tuple';
 
-type EventRecord<EventList> = {
+export type EventRecord<EventList> = {
     [k in keyof EventList]?: [...any];
 }
 
@@ -26,11 +26,12 @@ type GetTypesForEntry<T, Entry> = Exclude<{
     [Key in keyof Entry]?: Key extends T ? Entry[Key] : never
 }[keyof Entry], undefined>;
 
-type EventParameters<EventList, Event extends keyof EventList, TypeRecord extends EventRecord<EventList>, DefaultEventCallbackParams extends Array<any> = []> = 
+export type EventParameters<EventList, Event extends keyof EventList, TypeRecord extends EventRecord<EventList>, DefaultEventCallbackParams extends Array<any> = []> = 
     Event extends keyof TypeRecord ? 
         GetTypesForEntry<Event, TypeRecord> extends any[] ? Concat<DefaultEventCallbackParams, Exclude<TypeRecord[Event], undefined>> : DefaultEventCallbackParams 
     : DefaultEventCallbackParams;
 
+export type AllToUndefined<Tuple extends any[]> = CompareLength<Tuple, []> extends 'equal' ? [Tuple[0]|undefined, ...AllToUndefined<Drop<Tuple, 1>>] : [];
 type NormalizeLength<Tuple extends any[], ourLongestTuple extends any[]> = CompareLength<Tuple, ourLongestTuple> extends 'equal' ? Tuple : Append<Tuple, undefined>;
 
 type __NormalizeEventParameters<Tuple extends any[][], ourLongestTuple extends any[]> = 
@@ -38,7 +39,7 @@ type __NormalizeEventParameters<Tuple extends any[][], ourLongestTuple extends a
         NormalizeLength<Tuple[0], ourLongestTuple> :
     __NormalizeEventParameters<Drop<Tuple, 1>, ourLongestTuple> | NormalizeLength<Tuple[0], ourLongestTuple>
 
-type NormalizeEventParameters<Tuple extends any[]> = EnsureArrayType<Tuple['length'] extends 0 ? Tuple : 
+export type NormalizeEventParameters<Tuple extends any[]> = EnsureArrayType<Tuple['length'] extends 0 ? Tuple : 
     UnionToArray<Tuple> extends [any[], ...any[]] ? 
         __NormalizeEventParameters<Exclude<UnionToArray<Tuple>, LongestTuple<UnionToArray<Tuple>>>, LongestTuple<UnionToArray<Tuple>>>:
     Tuple
@@ -58,11 +59,11 @@ export type EventStructure<Event> = {
 }
 
 export interface IEventListener<
-    EventList, 
+    EventList extends Record<number, any>, 
     TypeRecord extends EventRecord<EventList> = {}, 
     DefaultEventCallbackParams extends any[] = [], 
     SpecialOnArgs extends any[] = []
 > {
     on <Event extends keyof EventList>(event: Event, callback: (...args: NormalizeEventParameters<EventParameters<EventList, Event, TypeRecord, DefaultEventCallbackParams>>) => any, ...args: SpecialOnArgs): this;
-    off<Event extends keyof EventList>(event: Event, callback: (...args: NormalizeEventParameters<EventParameters<EventList, Event, TypeRecord, DefaultEventCallbackParams>>) => any, ...args: SpecialOnArgs): this;
+    off<Event extends keyof EventList>(event: Event, callback: (...args: NormalizeEventParameters<EventParameters<EventList, Event, TypeRecord, DefaultEventCallbackParams>>) => any, ...args: AllToUndefined<SpecialOnArgs>): this;
 }

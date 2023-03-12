@@ -1,0 +1,27 @@
+import { isEqual } from "underscore";
+import { IPackageSeparator } from "../../definition/PackageSeparator/IPackageSeparator";
+
+export const packageSeparatorGenerator = <Args extends any[]>(generator: (...args: Args) => IPackageSeparator) => {
+    const packageSeparatorStorage: Map<Args, InstanceType<typeof WeakRef>> = new Map();
+
+    const findElement = (args: Args) => {
+        for (const [key, element] of packageSeparatorStorage.entries()) {
+            if (isEqual(key, args)) {
+                return element.deref();
+            }
+        }
+    }
+
+    return (...args: Args) => {
+
+        let ref = findElement(args);
+        
+        if (ref !== undefined) {
+            return ref;
+        }
+
+        ref = generator(...args);
+        packageSeparatorStorage.set(args, new WeakRef(ref));
+        return ref;
+    }
+}

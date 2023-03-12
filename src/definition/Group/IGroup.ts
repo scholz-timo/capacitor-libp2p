@@ -1,6 +1,6 @@
 import { IVersionHandler } from './VersionHandler/IVersionHandler';
 
-interface BasicGroupConfiguration {
+export interface BasicGroupConfiguration {
     version: string;
 }
 
