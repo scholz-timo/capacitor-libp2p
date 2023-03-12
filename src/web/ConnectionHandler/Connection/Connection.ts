@@ -1,23 +1,27 @@
-import { EventListener } from "../../EventListener/EventListener"
-import { IConnectionEventTypes, ConnectionEventMap } from "../../../definition/ConnectionHandler/Connection/IConnection";
-import { Connection as P2PConnection } from '@libp2p/interface-connection';
-import { WithAddress } from "../../../definition/WithAddress";
+import type { Connection as P2PConnection } from '@libp2p/interface-connection';
 
-export class Connection extends EventListener<IConnectionEventTypes, ConnectionEventMap> {
+import type {
+  IConnectionEventTypes,
+  ConnectionEventMap,
+} from '../../../definition/ConnectionHandler/Connection/IConnection';
+import type { WithAddress } from '../../../definition/WithAddress';
+import { EventListener } from '../../EventListener/EventListener';
 
-    public readonly source: WithAddress['source'];
+export class Connection extends EventListener<
+  IConnectionEventTypes,
+  ConnectionEventMap
+> {
+  public readonly source: WithAddress['source'];
 
-    constructor(
-        private connection: P2PConnection
-    ) {
-        super();
+  constructor(private connection: P2PConnection) {
+    super();
 
-        this.source = {
-            address: this.connection.remoteAddr.toString()
-        }
-    }
+    this.source = {
+      address: this.connection.remoteAddr.toString(),
+    };
+  }
 
-    async close() {
-        await this.connection.close();
-    }
+  async close(): Promise<void> {
+    await this.connection.close();
+  }
 }

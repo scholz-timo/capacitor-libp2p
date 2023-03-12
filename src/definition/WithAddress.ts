@@ -1,7 +1,5 @@
-
-
 export interface WithAddress {
-    readonly source: {
-        readonly address: string;
-    }
+  readonly source: {
+    readonly address: string;
+  };
 }

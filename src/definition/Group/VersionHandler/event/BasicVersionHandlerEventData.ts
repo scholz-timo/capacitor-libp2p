@@ -1,6 +1,6 @@
-import { WithAddress } from "../../../WithAddress";
-import { WithData } from "../../../WithData";
+import type { WithAddress } from '../../../WithAddress';
+import type { WithData } from '../../../WithData';
 
-export interface BasicVersionHandlerEventData<T = never> extends WithAddress, WithData<T> {
-
-}
+export interface BasicVersionHandlerEventData<T = never>
+  extends WithAddress,
+    WithData<T> {}

@@ -1,10 +1,11 @@
-import { EventStructure } from "../../../EventListener/IEventListener";
-import { BasicVersionHandlerEventData } from "./BasicVersionHandlerEventData";
-import { VersionHandlerEventType } from "./enum/VersionHandlerEventType";
+import type { EventStructure } from '../../../EventListener/IEventListener';
+
+import type { BasicVersionHandlerEventData } from './BasicVersionHandlerEventData';
+import type { VersionHandlerEventType } from './enum/VersionHandlerEventType';
 
 /**
- * 
+ *
  */
-export interface VersionHandlerErrorEvent extends EventStructure<VersionHandlerEventType.error>, BasicVersionHandlerEventData<undefined> {
-
-}
+export interface VersionHandlerErrorEvent
+  extends EventStructure<VersionHandlerEventType.error>,
+    BasicVersionHandlerEventData<undefined> {}

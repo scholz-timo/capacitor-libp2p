@@ -1,15 +1,17 @@
-import { IStreamEventTypes, StreamEventMap } from "../../../definition/ConnectionHandler/Stream/IStream";
-import { EventListener } from "../../EventListener/EventListener";
-import { Stream as P2PStream } from "@libp2p/interface-connection";
+import type { Stream as P2PStream } from '@libp2p/interface-connection';
+
+import type {
+  IStreamEventTypes,
+  StreamEventMap,
+} from '../../../definition/ConnectionHandler/Stream/IStream';
+import { EventListener } from '../../EventListener/EventListener';
 
 export class Stream extends EventListener<IStreamEventTypes, StreamEventMap> {
-    constructor(
-        private stream: P2PStream
-    ) {
-        super();
-    }
+  constructor(private stream: P2PStream) {
+    super();
+  }
 
-    async close() {
-        await this.stream.close();
-    }
+  async close(): Promise<void> {
+    await this.stream.close();
+  }
 }

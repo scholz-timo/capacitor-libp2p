@@ -1,8 +1,8 @@
+import type { EventStructure } from '../../../EventListener/IEventListener';
+import type { WithAddress } from '../../../WithAddress';
 
-import { EventStructure } from "../../../EventListener/IEventListener";
-import { StreamEventType } from "./enum/StreamEventType";
-import { WithAddress } from "../../../WithAddress";
+import type { StreamEventType } from './enum/StreamEventType';
 
-export interface StreamClosedEvent extends EventStructure<StreamEventType.closed>, WithAddress {
-    
-}
+export interface StreamClosedEvent
+  extends EventStructure<StreamEventType.closed>,
+    WithAddress {}

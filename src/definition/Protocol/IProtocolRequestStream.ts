@@ -1,7 +1,5 @@
-
-import { StreamDirection } from './enum/StreamDirection'
+import type { StreamDirection } from './enum/StreamDirection';
 
 export interface IProtocolRequestStream {
-    getStreamDirection(): StreamDirection;
+  getStreamDirection(): StreamDirection;
 }
-
