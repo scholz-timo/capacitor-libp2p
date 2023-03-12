@@ -32,9 +32,11 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@chainsafe/libp2p-noise": "^11.0.1",
+    "@libp2p/mplex": "^7.1.1",
+    "@types/underscore": "^1.11.4",
     "typescript-tuple": "^5.0.1",
-    "underscore": "^1.13.6",
-    "@types/underscore": "^1.11.4"
+    "underscore": "^1.13.6"
   },
   "devDependencies": {
     "@capacitor/android": "^4.0.0",
@@ -54,9 +56,9 @@
   },
   "peerDependencies": {
     "@capacitor/core": "^4.0.0",
-    "libp2p": "^0.42.2",
     "@libp2p/websockets": "^5.0.4",
-    "@types/ws": "^8.5.4"
+    "@types/ws": "^8.5.4",
+    "libp2p": "^0.42.2"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",

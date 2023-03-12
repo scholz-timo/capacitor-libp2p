@@ -7,4 +7,8 @@ export class VersionHandler extends EventListener<IVersionHandlerEventTypes, Ver
     ) {
         super();
     }
+
+    getVersion() {
+        return this.version;
+    }
 }

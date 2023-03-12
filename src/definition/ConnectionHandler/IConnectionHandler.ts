@@ -62,11 +62,6 @@ export interface IConnectionHandler extends IEventListener<IConnectionHandlerEve
     getMyConnections(): IConnection[];
 
     /**
-     * Returns all the connections. (From peers & their peer & so on)
-     */
-    getAllConnection(): Promise<IConnection>[];
-
-    /**
      * Returns our addresses.
      * Can return an empty array, when no inbound connections are supported.
      */

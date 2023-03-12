@@ -8,8 +8,12 @@ import { packageSeparatorGenerator } from "./web/PackageSeparator/PackageSeparat
 import { GroupFactory } from "./web/Group/GroupFactory";
 import { DelimiterSeparator } from "./web/PackageSeparator/implementation/DelimiterSeparator";
 import { ConnectionHandler } from "./web/ConnectionHandler/ConnectionHandler";
-import { createLibp2p } from 'libp2p';
 import { IPackageSeparatorGroup } from './definition/PackageSeparator/IPackageSeparator';
+
+import { createLibp2p } from 'libp2p';
+import { webSockets } from '@libp2p/websockets';
+import { mplex } from '@libp2p/mplex'
+import { noise } from '@chainsafe/libp2p-noise'
 
 const packageSeparator = {
   delimiter: packageSeparatorGenerator((separator: Uint8Array) => {
@@ -27,7 +31,16 @@ const transformer = {
 export class P2PProviderWeb extends WebPlugin implements P2PProviderPlugin {
   async createConnectionHandler(_options: { groups: IGroup[]; addresses?: string[]; }): Promise<IConnectionHandler> {
     const libp2p = await createLibp2p({
-      start: false
+      start: false,
+      transports: [
+        webSockets()
+      ],
+      streamMuxers: [
+        mplex()
+      ],
+      connectionEncryption: [
+        noise()
+      ]
     });
 
     return new ConnectionHandler(libp2p) as unknown as IConnectionHandler;

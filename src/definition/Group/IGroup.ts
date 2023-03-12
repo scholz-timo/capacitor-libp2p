@@ -5,6 +5,8 @@ export interface BasicGroupConfiguration {
 }
 
 export interface IGroup {
+    getName(): string;
+    getVersionForVersionHandler(versionHandler: IVersionHandler): string|undefined;
 }
 
 /**

@@ -17,4 +17,6 @@ export type VersionHandlerEventStructure = {
 /**
  * The version handler is an event bus.
  */
-export interface IVersionHandler extends IEventListener<IVersionHandlerEventTypes, VersionHandlerEventStructure> { }
+export interface IVersionHandler extends IEventListener<IVersionHandlerEventTypes, VersionHandlerEventStructure> {
+    getVersion(): string;
+}
