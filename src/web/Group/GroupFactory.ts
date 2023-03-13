@@ -16,7 +16,7 @@ export class GroupFactory implements IGroupFactory {
 
   constructor(private name: string) {}
 
-  generateVersionHandler(version: BasicGroupConfiguration): IVersionHandler;
+  generateVersionHandler(version: BasicGroupConfiguration): Promise<IVersionHandler>;
   generateVersionHandler(
     version: BasicGroupConfiguration,
     initializer: (handler: IVersionHandler) => any,
@@ -24,7 +24,7 @@ export class GroupFactory implements IGroupFactory {
   generateVersionHandler(
     { version }: BasicGroupConfiguration,
     initializer?: (handler: IVersionHandler) => any,
-  ): this | IVersionHandler {
+  ): this|Promise<IVersionHandler> {
     if (this.versionHandlers[version] !== undefined) {
       throw new Error('Duplicate version registration...');
     }

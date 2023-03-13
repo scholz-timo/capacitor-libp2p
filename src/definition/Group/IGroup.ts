@@ -22,7 +22,7 @@ export interface IGroupFactory {
    *
    * @param version
    */
-  generateVersionHandler(version: BasicGroupConfiguration): IVersionHandler;
+  generateVersionHandler(version: BasicGroupConfiguration): Promise<IVersionHandler>;
 
   /**
    * Generates a version handler and attaches it to the group factory.

@@ -6,15 +6,16 @@ import { createLibp2p } from 'libp2p';
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string';
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string';
 
-import type { IConnectionHandler } from './definition/ConnectionHandler/IConnectionHandler';
-import type { IGroupFactory, IGroup } from './definition/Group/IGroup';
-import type { IPackageSeparatorGroup } from './definition/PackageSeparator/IPackageSeparator';
-import type { ITransformerGroup } from './definition/Tranformer/ITransformer';
-import type { P2PProviderPlugin } from './definitions';
-import { ConnectionHandler } from './web/ConnectionHandler/ConnectionHandler';
-import { GroupFactory } from './web/Group/GroupFactory';
-import { packageSeparatorGenerator } from './web/PackageSeparator/PackageSeparatorGenerator';
-import { DelimiterSeparator } from './web/PackageSeparator/implementation/DelimiterSeparator';
+import type { IConnectionHandler } from '../definition/ConnectionHandler/IConnectionHandler';
+import type { IGroupFactory, IGroup } from '../definition/Group/IGroup';
+import type { IPackageSeparatorGroup } from '../definition/PackageSeparator/IPackageSeparator';
+import type { ITransformerGroup } from '../definition/Tranformer/ITransformer';
+import type { P2PProviderPlugin } from '../definitions';
+
+import { ConnectionHandler } from './ConnectionHandler/ConnectionHandler';
+import { GroupFactory } from './Group/GroupFactory';
+import { packageSeparatorGenerator } from './PackageSeparator/PackageSeparatorGenerator';
+import { DelimiterSeparator } from './PackageSeparator/implementation/DelimiterSeparator';
 
 const packageSeparator = {
   delimiter: packageSeparatorGenerator((separator: Uint8Array) => {

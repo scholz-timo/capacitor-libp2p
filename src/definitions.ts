@@ -3,6 +3,22 @@ import type { IGroupFactory, IGroup } from './definition/Group/IGroup';
 import type { IPackageSeparatorGroup } from './definition/PackageSeparator/IPackageSeparator';
 import type { ITransformerGroup } from './definition/Tranformer/ITransformer';
 
+export interface P2PProviderAdapter {
+  createLibP2PInstance(value: { groupIds: number[], addresses?: string[] }): Promise<{ id: number }>;
+  destroyLibP2PInstance(): Promise<void>;
+
+
+  createGroup(value: { name: string, versionHandler: string[] }): Promise<{ id: string }>;
+
+  createVersionHandler(value: { version: string }): Promise<{ id: string }>;
+  sendVersionHandlerResponse(value: { id: string, responseType: any }): Promise<void>;
+  onVersionHandlerUpdate(versionHandlerUpdateCallback: (value: { id: string, data: any }) => any): Promise<any> & any;
+
+  createLibP2PMessageListener(messageHandlerCallback: (value: { id: string, data: any}) => any): Promise<any> & any;
+
+}
+
+
 /**
  * The P2P-Provider plugin interface.
  */
