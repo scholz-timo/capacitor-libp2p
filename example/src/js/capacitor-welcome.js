@@ -141,7 +141,7 @@ const showMessage = message => {
   showMessage('Starting connection handler...');
   await connectionHandler.start();
 
-  const addresses = connectionHandler.getAddresses();
+  const addresses = await connectionHandler.getAddresses();
   addresses.forEach(address => {
     showMessage(`Might be available under address: ${address}`);
   });
