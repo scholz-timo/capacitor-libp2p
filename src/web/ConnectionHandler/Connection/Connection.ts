@@ -5,7 +5,7 @@ import type {
   ConnectionEventMap,
 } from '../../../definition/ConnectionHandler/Connection/IConnection';
 import type { WithAddress } from '../../../definition/WithAddress';
-import { EventListener } from '../../EventListener/EventListener';
+import { EventListener } from '../../../common/EventListener/EventListener';
 
 export class Connection extends EventListener<
   IConnectionEventTypes,

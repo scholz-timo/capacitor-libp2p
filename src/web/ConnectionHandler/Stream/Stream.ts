@@ -4,7 +4,7 @@ import type {
   IStreamEventTypes,
   StreamEventMap,
 } from '../../../definition/ConnectionHandler/Stream/IStream';
-import { EventListener } from '../../EventListener/EventListener';
+import { EventListener } from '../../../common/EventListener/EventListener';
 
 export class Stream extends EventListener<IStreamEventTypes, StreamEventMap> {
   constructor(private stream: P2PStream) {

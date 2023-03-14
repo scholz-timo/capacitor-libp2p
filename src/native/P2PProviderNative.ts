@@ -4,17 +4,27 @@ import type { IPackageSeparatorGroup } from '../definition/PackageSeparator/IPac
 import type { ITransformerGroup } from '../definition/Tranformer/ITransformer';
 import type { P2PProviderAdapter, P2PProviderPlugin } from '../definitions';
 
+import { Group } from './Group/Group';
+import { GroupFactory } from './Group/GroupFactory';
+import { ConnectionHandler } from "./ConnectionHandler/ConnectionHandler";
+
 export class P2PProviderNative implements P2PProviderPlugin {
   constructor(private P2PProviderAdapter: P2PProviderAdapter) {}
 
-  createGroupFactory(_name: string): Promise<IGroupFactory> {
-    throw new Error('Method not implemented.');
+  async createGroupFactory(name: string): Promise<IGroupFactory> {
+    return new GroupFactory(name, this.P2PProviderAdapter);
   }
-  createConnectionHandler(_options: {
+
+  async createConnectionHandler(_options: {
     groups: IGroup[];
     addresses?: string[] | undefined;
   }): Promise<IConnectionHandler> {
-    throw new Error('Method not implemented.');
+    const { id } = await this.P2PProviderAdapter.createLibP2PInstance({
+      groupIds: (_options.groups as Group[]).map((group) => group.getId())
+    });
+
+    return new ConnectionHandler(this.P2PProviderAdapter, id);
+
   }
   ensurePackageSeparator(): Promise<IPackageSeparatorGroup> {
     throw new Error('Method not implemented.');

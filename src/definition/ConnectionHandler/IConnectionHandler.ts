@@ -68,13 +68,13 @@ export interface IConnectionHandler
   /**
    * Returns our current connections.
    */
-  getMyConnections(): IConnection[];
+  getMyConnections(): Promise<IConnection[]>;
 
   /**
    * Returns our addresses.
    * Can return an empty array, when no inbound connections are supported.
    */
-  getAddresses(): string[];
+  getAddresses(): Promise<string[]>;
 
   /**
    * Opens a new stream for the given protocol.
