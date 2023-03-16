@@ -7,4 +7,9 @@ import type { StreamEventType } from './enum/StreamEventType';
 export interface StreamDataEvent
   extends EventStructure<StreamEventType.data>,
     WithAddress,
-    WithData {}
+    WithData {
+      /**
+       * If data was not send completed, partial is true, otherwise false.
+       */
+      partial: boolean;
+    }

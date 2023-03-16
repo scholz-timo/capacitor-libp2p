@@ -1,8 +1,11 @@
 import type { IConnectionHandler } from './definition/ConnectionHandler/IConnectionHandler';
+import { StreamEventType } from './definition/ConnectionHandler/Stream/event/enum/StreamEventType';
 import type { IGroupFactory, IGroup } from './definition/Group/IGroup';
 import type { IPackageSeparatorGroup } from './definition/PackageSeparator/IPackageSeparator';
 import { ProtocolRequestHandlerResponse } from './definition/Protocol/enum/ProtocolRequestHandlerResponse';
 import type { ITransformerGroup } from './definition/Tranformer/ITransformer';
+
+type P2PProviderAdapterStreamListenerCallback = (value: { event: StreamEventType, data: any, id: number, address: string }) => any;
 
 /**
  * The P2PProviderAdapter.
@@ -30,6 +33,12 @@ export interface P2PProviderAdapter {
   dial(value: { address: string, id: number }): Promise<{ id: number }>;
 
   /**
+   * 
+   * @param value.id The id of the libp2p connection.
+   */
+  closeConnection(value: { id: number }): Promise<void>;
+
+  /**
    * Will close a connection, if present.
    * 
    * @param value.address The address to close. Is a multi-address.
@@ -37,20 +46,31 @@ export interface P2PProviderAdapter {
   hangUp(value: { address: string, id: number }): Promise<void>;
 
   /**
+   * Will close a stream, if present.
+   * 
+   * @param value 
+   */
+  closeStream(value: { id: number }): Promise<void>;
+
+  /**
    * Returns my connections.
    * 
    * Returns an object of connections(consisting of address(multi-address) and id)
    * 
+   * @param value.id The id of the core(LibP2P) instance.
+   * 
    * @returns connections[].address
    * @returns connections[].id
    */
-  getMyConnections(): Promise<{ connections: { address: string, id: number }[] }>;
+  getMyConnections(value: { id: number }): Promise<{ connections: { address: string, id: number }[] }>;
 
 
   /**
    * Return my own addresses.
+   * 
+   * @param value.id The id of the core(LibP2P) instance.
    */
-  getAddresses(): Promise<{ addresses: string[] }>;
+  getAddresses(value: { id: number }): Promise<{ addresses: string[] }>;
 
   /**
    * Creates an new version handler
@@ -136,7 +156,7 @@ export interface P2PProviderAdapter {
    * 
    * @param messageHandlerCallback 
    */
-  createLibP2PStreamListener(messageHandlerCallback: (value: { id: number, data: any}) => any): Promise<any> & any;
+  createLibP2PStreamListener(messageHandlerCallback: P2PProviderAdapterStreamListenerCallback): Promise<any> & any;
 
 }
 

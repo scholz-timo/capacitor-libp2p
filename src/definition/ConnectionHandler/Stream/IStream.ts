@@ -8,11 +8,11 @@ import type { StreamErrorEvent } from './event/SteamErrorEvent';
 import type { StreamClosedEvent } from './event/StreamClosedEvent';
 import type { StreamEventType } from './event/enum/StreamEventType';
 
-export type IStreamEventTypes = ReverseMap<StreamEventType>;
+export type IStreamEventTypes = ReverseMap<typeof StreamEventType>;
 export type StreamEventMap = {
-  [StreamEventType.data]: StreamDataEvent;
-  [StreamEventType.closed]: StreamClosedEvent;
-  [StreamEventType.error]: StreamErrorEvent;
+  [StreamEventType.data]: [StreamDataEvent];
+  [StreamEventType.closed]: [StreamClosedEvent];
+  [StreamEventType.error]: [StreamErrorEvent];
 };
 
 export interface IStream

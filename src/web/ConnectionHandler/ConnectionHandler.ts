@@ -19,6 +19,7 @@ export class ConnectionHandler extends EventListener<
   IConnectionHandlerEventTypes,
   ConnectionHandlerEventStructure
 > {
+  
   private status: ConnectionHandlerStatus = ConnectionHandlerStatus.STOPPED;
 
   constructor(private connection: Libp2p) {
