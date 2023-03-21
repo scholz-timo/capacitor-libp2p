@@ -85,12 +85,10 @@ const showMessage = message => {
 
   // Host side
   // Create a group factory for the "echo" protocol.
-  const myGroupFactory = await P2PProvider.createGroupFactory({
-    value: 'echo',
-  });
+  const myGroupFactory = await P2PProvider.createGroupFactory('echo');
   // Create a version handler, that will handle version 1.0.0 of the echo protocol.
-  const versionHandler = myGroupFactory.generateVersionHandler(
-    '1.0.0',
+  const versionHandler = await myGroupFactory.generateVersionHandler(
+    { version: '1.0.0', /*separator: separators.delimiter(transformers.string.toUInt8('\n'))*/ },
     versionHandler => {
       // Create a listener on all events.
       // This is a binary mask, so you can define the events however you want, by just registering one handler.
@@ -121,11 +119,12 @@ const showMessage = message => {
             default:
               return ProtocolRequestHandlerResponse.Close;
           }
-        },
-        separators.delimiter(transformers.string.toUInt8('\n')),
+        }
       ); // Call data event on "\n" in packets (Split them up or join them so that they end with "\n")
     },
   );
+
+  console.log(versionHandler);
 
   showMessage('Generating group...');
   // Generate a real group out of the provided data.
@@ -176,19 +175,27 @@ const showMessage = message => {
     // Connect to client.
     const connection = await connectionHandler.dial(input.value);
 
+    showMessage(`Connected to "${input.value}"`);
+
     // Create the stream.
     const stream = await connectionHandler.getStreamForProtocol(input.value, {
       group: myGroup,
       version: versionHandler,
     }); // Can throw exception, when group(protocol) or version are not found.
     // Handle data event.
-    stream.on(VersionHandlerEventType.data, (event, content) => {
+
+    showMessage(`Opened stream for protocol... to "${input.value}"`);
+
+    stream.on(VersionHandlerEventType.data, (event) => {
       try {
         // Transform the binary representation(UInt8Array) to string and display it + address.
+
+        console.log(event.stream);
+
         showMessage(
           `Got response from "{${
-            content.source.address
-          }}" value: "${P2PProvider.transformer.string.from(content.stream)}"`,
+            event.source.address
+          }}" value: "${transformers.string.fromUInt8(event.stream)}"`,
         );
         connection.close();
       } catch (error) {
@@ -200,7 +207,7 @@ const showMessage = message => {
     //connection.on('event', () => {
     //});
     // Tranform string to binary representation(UInt8Array) and send it.
-    await stream.send(P2PProvider.transformer.stringValue.to('hello-world\n'));
+    await stream.send(transformers.string.toUInt8('hello-world\n'));
   };
 
   button.addEventListener('click', async () => {

@@ -43,6 +43,6 @@ export interface IEventListener<
           DefaultEventCallbackParams
       >
     ) => any,
-    ...args: SpecialOnArgs extends any[] ? AllToUndefined<Exclude<SpecialOnArgs, undefined>> : []
+    ...args: SpecialOnArgs extends any[] ? Exclude<SpecialOnArgs, undefined> : []
   ): this;
 }

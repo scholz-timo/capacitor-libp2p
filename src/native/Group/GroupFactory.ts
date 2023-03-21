@@ -17,8 +17,8 @@ export class GroupFactory implements IGroupFactory {
     ) { }
 
     generateVersionHandler(version: BasicGroupConfiguration): Promise<IVersionHandler>;
-    generateVersionHandler(version: BasicGroupConfiguration, initializer: (versionHandler: IVersionHandler) => any): this;
-    generateVersionHandler(version: BasicGroupConfiguration, initializer?: (versionHandler: IVersionHandler) => any): this | Promise<IVersionHandler> {
+    generateVersionHandler(version: BasicGroupConfiguration, initializer: (versionHandler: IVersionHandler) => any): Promise<IVersionHandler>;
+    async generateVersionHandler(version: BasicGroupConfiguration, initializer?: (versionHandler: IVersionHandler) => any): Promise<IVersionHandler> {
         if (!initializer) {
             return (async () => {
                 if (this.versionHandlers[version.version]) {
@@ -44,7 +44,7 @@ export class GroupFactory implements IGroupFactory {
             return versionHandler;
         })();
 
-        return this;
+        return this.versionHandlers[version.version];
     }
     async generate(): Promise<IGroup> {
         const resolvedVersionHandlers = Object.fromEntries(

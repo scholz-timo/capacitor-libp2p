@@ -95,6 +95,6 @@ export class ConnectionHandler extends EventListener<
     );
 
     // TODO: cache.
-    return new Stream(stream) as any;
+    return new Stream(stream, address, version);
   }
 }

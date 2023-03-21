@@ -5,7 +5,7 @@ import type { IPackageSeparatorGroup } from './definition/PackageSeparator/IPack
 import { ProtocolRequestHandlerResponse } from './definition/Protocol/enum/ProtocolRequestHandlerResponse';
 import type { ITransformerGroup } from './definition/Tranformer/ITransformer';
 
-type P2PProviderAdapterStreamListenerCallback = (value: { event: StreamEventType, data: any, id: number, address: string }) => any;
+type P2PProviderAdapterStreamListenerCallback = (value: { event: StreamEventType, data: any, id: number }) => any;
 
 /**
  * The P2PProviderAdapter.
@@ -123,6 +123,8 @@ export interface P2PProviderAdapter {
    * @returns A new or an existing stream id.
    */
   createLibP2PStream(value: { id: number, connectionId: number, groupId: number, versionHandlerId: number }): Promise<{ id: number }>;
+
+  sendDataToStream(value: { id: number, data: Uint8Array }): Promise<void>;
 
   /**
    * Destroys a given stream.

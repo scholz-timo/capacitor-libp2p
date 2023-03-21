@@ -7,6 +7,9 @@ import type { IVersionHandler } from '../../definition/Group/VersionHandler/IVer
 
 import { Group } from './Group';
 import { VersionHandler } from './VersionHandler/VersionHandler';
+import { RawSeparator } from '../../common/PackageSeparator/implementation/RawSeparator';
+
+const myRawSeparator = new RawSeparator();
 
 export class GroupFactory implements IGroupFactory {
   private versionHandlers: Record<
@@ -16,20 +19,20 @@ export class GroupFactory implements IGroupFactory {
 
   constructor(private name: string) {}
 
-  generateVersionHandler(version: BasicGroupConfiguration): Promise<IVersionHandler>;
+  generateVersionHandler(configuration: BasicGroupConfiguration): Promise<IVersionHandler>;
   generateVersionHandler(
-    version: BasicGroupConfiguration,
+    configuration: BasicGroupConfiguration,
     initializer: (handler: IVersionHandler) => any,
-  ): this;
-  generateVersionHandler(
-    { version }: BasicGroupConfiguration,
+  ): Promise<IVersionHandler>;
+  async generateVersionHandler(
+    { version, separator }: BasicGroupConfiguration,
     initializer?: (handler: IVersionHandler) => any,
-  ): this|Promise<IVersionHandler> {
+  ): Promise<IVersionHandler> {
     if (this.versionHandlers[version] !== undefined) {
       throw new Error('Duplicate version registration...');
     }
 
-    const versionHandler = new VersionHandler(version);
+    const versionHandler = new VersionHandler(version, separator ?? myRawSeparator);
 
     if (initializer) {
       /* eslint-disable */
@@ -42,7 +45,7 @@ export class GroupFactory implements IGroupFactory {
           reject(error);
         }
       });
-      return this;
+      return versionHandler;
     }
 
     this.versionHandlers[version] = versionHandler;

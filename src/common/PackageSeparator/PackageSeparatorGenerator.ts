@@ -10,10 +10,10 @@ export const packageSeparatorGenerator = <Args extends any[]>(
     InstanceType<typeof WeakRef>
   > = new Map();
 
-  const findElement = (args: Args) => {
+  const findElement = (args: Args): IPackageSeparator|undefined => {
     for (const [key, element] of packageSeparatorStorage.entries()) {
       if (isEqual(key, args)) {
-        return element.deref();
+        return element.deref() as IPackageSeparator;
       }
     }
   };

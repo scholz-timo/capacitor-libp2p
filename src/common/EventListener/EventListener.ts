@@ -1,14 +1,14 @@
 import { isEqual } from 'underscore';
 
 import type {
-  AllToUndefined,
+  BasicEventList,
   BasicTypeRecord,
   EventParameters,
   IEventListener,
 } from '../../definition/EventListener/IEventListener';
 
 export class EventListener<
-  EventList extends Record<number, any>,
+  EventList extends BasicEventList,
   /* eslint-disable */
   TypeRecord extends BasicTypeRecord<EventList> = {},
   /* eslint-enable */
@@ -36,7 +36,7 @@ export class EventListener<
   protected async basicEmit<T extends keyof EventList>(
     event: T,
     callbackParams: EventParameters<EventList, T, TypeRecord, DefaultEventCallbackParams>,
-    otherArgs: SpecialOnArgs extends any[] ? AllToUndefined<Exclude<SpecialOnArgs, undefined>> : [],
+    otherArgs: SpecialOnArgs extends any[] ? Exclude<SpecialOnArgs, undefined> : undefined,
   ): Promise<Array<{isError: false, data: any } | { isError: true, error: any }>> {
     const events = Object.entries(this.eventListeners)
       .filter(([key]) => (Number(event) & Number(key)) === Number(key))
@@ -46,11 +46,11 @@ export class EventListener<
     const eventsToCall = events
       .filter(event => !event.deleted)
       .filter(event => {
-        if (otherArgs.length === 0) {
+        if ((otherArgs?.length ?? 0) === 0) {
           return true;
         }
 
-        return otherArgs.map((otherArg, index) => {
+        return otherArgs?.map((otherArg, index) => {
           if (otherArg === undefined) {
             return false;
           }

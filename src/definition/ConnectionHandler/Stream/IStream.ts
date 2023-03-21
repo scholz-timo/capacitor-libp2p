@@ -16,6 +16,8 @@ export type StreamEventMap = {
 };
 
 export interface IStream
-  extends IEventListener<IStreamEventTypes, StreamEventMap> {
+  extends IEventListener<IStreamEventTypes, StreamEventMap, undefined, undefined> {
+
+  send(data: Uint8Array): Promise<void>;
   close(): Promise<void>;
 }

@@ -77,10 +77,10 @@ export class ConnectionHandler extends EventListener<
     }
 
     async getStreamForProtocol(
-        address: string,
+        _address: string,
         protocol: { group: IGroup; version: IVersionHandler },
     ): Promise<IStream> {
-        const connection = await this.dial(address);
+        // const connection = await this.dial(address);
 
         const { group, version } = protocol;
 
@@ -89,7 +89,7 @@ export class ConnectionHandler extends EventListener<
         }
 
         // TODO: cache.
-        const { id } = await this.adapter.createLibP2PStream({ id: this.id, connectionId: (connection as any).getId(), groupId: (group as any).getId(), versionHandlerId: (version as any).getId() })
+        //const { id } = await this.adapter.createLibP2PStream({ id: this.id, connectionId: (connection as any).getId(), groupId: (group as any).getId(), versionHandlerId: (version as any).getId() })
         throw new Error("Not implemented.");
     }
 }

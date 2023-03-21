@@ -1,4 +1,4 @@
-import { AWebPackageSeparator } from '../AWebPackageSeparator';
+import { IPackageSeparator } from "../../../definition/PackageSeparator/IPackageSeparator";
 
 /**
  *
@@ -69,11 +69,10 @@ function boyerMoore(pattern: Uint8Array) {
   return boyerMooreSearch;
 }
 
-export class DelimiterSeparator extends AWebPackageSeparator {
+export class DelimiterSeparator implements IPackageSeparator {
   private search: ReturnType<typeof boyerMoore>;
 
   constructor(pattern: Uint8Array) {
-    super();
     this.search = boyerMoore(pattern);
   }
 
@@ -113,5 +112,9 @@ export class DelimiterSeparator extends AWebPackageSeparator {
     }
 
     return [this.merge(previous, current)];
+  }
+
+  formatMessage(message: Uint8Array): Uint8Array {
+    return message; // TODO: Implement.
   }
 }

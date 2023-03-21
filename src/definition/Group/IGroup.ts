@@ -1,7 +1,9 @@
+import { IPackageSeparator } from '../PackageSeparator/IPackageSeparator';
 import type { IVersionHandler } from './VersionHandler/IVersionHandler';
 
 export interface BasicGroupConfiguration {
   version: string;
+  separator?: IPackageSeparator;
 }
 
 export interface IGroup {
@@ -33,7 +35,7 @@ export interface IGroupFactory {
   generateVersionHandler(
     version: BasicGroupConfiguration,
     initializer: (versionHandler: IVersionHandler) => any | Promise<any>,
-  ): this;
+  ): Promise<IVersionHandler>;
 
   /**
    * Generates the group.

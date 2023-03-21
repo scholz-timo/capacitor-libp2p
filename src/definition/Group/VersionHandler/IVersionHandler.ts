@@ -8,6 +8,7 @@ import type { VersionHandlerDataEvent } from './event/VersionHandlerDataEvent';
 import type { VersionHandlerErrorEvent } from './event/VersionHandlerErrorEvent';
 import type { VersionHandlerReadyEvent } from './event/VersionHandlerReadyEvent';
 import type { VersionHandlerEventType } from './event/enum/VersionHandlerEventType';
+import { IPackageSeparator } from '../../PackageSeparator/IPackageSeparator';
 
 export type IVersionHandlerEventTypes = ReverseMap<
   typeof VersionHandlerEventType
@@ -28,4 +29,5 @@ export interface IVersionHandler
     VersionHandlerEventStructure
   > {
   getVersion(): string;
+  getPackageSeparator(): IPackageSeparator;
 }

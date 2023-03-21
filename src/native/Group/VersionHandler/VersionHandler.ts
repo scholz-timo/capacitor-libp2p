@@ -3,6 +3,7 @@ import type {
     VersionHandlerEventStructure,
   } from '../../../definition/Group/VersionHandler/IVersionHandler';
   import { EventListener } from '../../../common/EventListener/EventListener';
+import { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
   
   export class VersionHandler extends EventListener<
     IVersionHandlerEventTypes,
@@ -13,6 +14,10 @@ import type {
         public id: string
     ) {
       super();
+    }
+
+    getPackageSeparator(): IPackageSeparator {
+      throw new Error("Not implemented...");
     }
   
     getVersion(): string {
