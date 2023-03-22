@@ -1,4 +1,4 @@
-import { IPackageSeparator } from "../../../definition/PackageSeparator/IPackageSeparator";
+import type { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
 
 /**
  *

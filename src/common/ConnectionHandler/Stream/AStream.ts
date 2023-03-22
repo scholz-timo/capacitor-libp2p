@@ -1,89 +1,110 @@
-import { StreamEventType } from "../../../definition/ConnectionHandler/Stream/event/enum/StreamEventType";
-import { IStreamEventTypes, StreamEventMap } from "../../../definition/ConnectionHandler/Stream/IStream";
-import { IPackageSeparator } from "../../../definition/PackageSeparator/IPackageSeparator";
-import { EventListener } from "../../EventListener/EventListener";
+import type {
+  IStreamEventTypes,
+  StreamEventMap,
+} from '../../../definition/ConnectionHandler/Stream/IStream';
+import { StreamEventType } from '../../../definition/ConnectionHandler/Stream/event/enum/StreamEventType';
+import type { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
+import { EventListener } from '../../EventListener/EventListener';
 
 export abstract class AStream extends EventListener<
-    IStreamEventTypes,
-    StreamEventMap,
-    undefined,
-    undefined
+  IStreamEventTypes,
+  StreamEventMap,
+  undefined,
+  undefined
 > {
+  protected abstract readonly address: string;
 
-    protected abstract readonly address: string;
+  private dataStorage?: Uint8Array = new Uint8Array();
 
-    private dataStorage?: Uint8Array = new Uint8Array();
+  /**
+   * Gets the package separator derived from the VersionHandler.
+   */
+  protected abstract getPackageSeparator(): IPackageSeparator;
 
-    /**
-     * Gets the package separator derived from the VersionHandler.
-     */
-    protected abstract getPackageSeparator(): IPackageSeparator;
-
-    protected onData(data: Uint8Array) {
-
-        if (this.dataStorage === undefined) {
-            throw new Error("Post-Clean calls are not supported.");
-        }
-
-        const packageSeparator = this.getPackageSeparator() as any;
-
-        const result = packageSeparator.separate(
-            this.dataStorage,
-            data
-        );
-
-        while (result.length > 1) {
-            // TODO: Check for errors and handle?.
-            this.basicEmit(StreamEventType.data, [{
-                source: {
-                    address: this.address,
-                },
-                stream: result.shift()!,
-                type: StreamEventType.data,
-                partial: false
-            }], undefined);
-        }
-
-        this.dataStorage = result[0];
+  protected onData(data: Uint8Array): void {
+    if (this.dataStorage === undefined) {
+      throw new Error('Post-Clean calls are not supported.');
     }
 
-    private flushDataStorage() {
+    const packageSeparator = this.getPackageSeparator() as any;
 
-        if (this.dataStorage === undefined) {
-            return;
-        }
+    const result = packageSeparator.separate(this.dataStorage, data);
 
-        this.basicEmit(StreamEventType.data, [{
+    while (result.length > 1) {
+      // TODO: Check for errors and handle?.
+      this.basicEmit(
+        StreamEventType.data,
+        [
+          {
             source: {
-                address: this.address,
+              address: this.address,
             },
-            stream: this.dataStorage,
+            stream: result.shift()!,
             type: StreamEventType.data,
-            partial: true
-        }], undefined);
-
-        delete this.dataStorage;
+            partial: false,
+          },
+        ],
+        undefined,
+      );
     }
 
-    protected onError() {
-        this.basicEmit(StreamEventType.error, [{
-            source: {
-                address: this.address,
-            },
-            type: StreamEventType.error,
-        }], undefined);
+    this.dataStorage = result[0];
+  }
+
+  private flushDataStorage(): void {
+    if (this.dataStorage === undefined) {
+      return;
     }
 
-    protected onClosed() {
-        this.flushDataStorage();
+    this.basicEmit(
+      StreamEventType.data,
+      [
+        {
+          source: {
+            address: this.address,
+          },
+          stream: this.dataStorage,
+          type: StreamEventType.data,
+          partial: true,
+        },
+      ],
+      undefined,
+    );
 
-        this.basicEmit(StreamEventType.closed, [{
-            source: {
-                address: this.address,
-            },
-            type: StreamEventType.closed,
-        }], undefined);
-    }
+    delete this.dataStorage;
+  }
 
-    public abstract send(data: Uint8Array): Promise<void>;
+  protected onError(): void {
+    this.basicEmit(
+      StreamEventType.error,
+      [
+        {
+          source: {
+            address: this.address,
+          },
+          type: StreamEventType.error,
+        },
+      ],
+      undefined,
+    );
+  }
+
+  protected onClosed(): void {
+    this.flushDataStorage();
+
+    this.basicEmit(
+      StreamEventType.closed,
+      [
+        {
+          source: {
+            address: this.address,
+          },
+          type: StreamEventType.closed,
+        },
+      ],
+      undefined,
+    );
+  }
+
+  public abstract send(data: Uint8Array): Promise<void>;
 }

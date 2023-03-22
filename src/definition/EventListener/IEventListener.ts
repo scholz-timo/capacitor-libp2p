@@ -1,4 +1,11 @@
-import type { AllToUndefined, BasicDefaultEventCallbackParams, BasicEventList, BasicTypeRecord, EventParameters, ReverseMap } from "./types";
+import type {
+  AllToUndefined,
+  BasicDefaultEventCallbackParams,
+  BasicEventList,
+  BasicTypeRecord,
+  EventParameters,
+  ReverseMap,
+} from './types';
 
 export {
   AllToUndefined,
@@ -6,8 +13,8 @@ export {
   BasicEventList,
   BasicTypeRecord,
   EventParameters,
-  ReverseMap
-}
+  ReverseMap,
+};
 
 export type EventStructure<Event> = {
   type: Event;
@@ -19,17 +26,17 @@ export interface IEventListener<
   TypeRecord extends BasicTypeRecord<EventList>,
   /* eslint-enable */
   DefaultEventCallbackParams extends BasicDefaultEventCallbackParams = undefined,
-  SpecialOnArgs extends (any[])|undefined = undefined,
+  SpecialOnArgs extends any[] | undefined = undefined,
 > {
   on<Event extends keyof EventList>(
     event: Event,
     callback: (
       ...args: EventParameters<
-          EventList,
-          Event,
-          TypeRecord,
-          DefaultEventCallbackParams
-        >
+        EventList,
+        Event,
+        TypeRecord,
+        DefaultEventCallbackParams
+      >
     ) => any,
     ...args: SpecialOnArgs extends undefined ? [] : SpecialOnArgs
   ): this;
@@ -37,12 +44,14 @@ export interface IEventListener<
     event: Event,
     callback: (
       ...args: EventParameters<
-          EventList,
-          Event,
-          TypeRecord,
-          DefaultEventCallbackParams
+        EventList,
+        Event,
+        TypeRecord,
+        DefaultEventCallbackParams
       >
     ) => any,
-    ...args: SpecialOnArgs extends any[] ? Exclude<SpecialOnArgs, undefined> : []
+    ...args: SpecialOnArgs extends any[]
+      ? Exclude<SpecialOnArgs, undefined>
+      : []
   ): this;
 }

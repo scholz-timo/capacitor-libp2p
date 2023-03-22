@@ -1,4 +1,5 @@
-import { IPackageSeparator } from '../PackageSeparator/IPackageSeparator';
+import type { IPackageSeparator } from '../PackageSeparator/IPackageSeparator';
+
 import type { IVersionHandler } from './VersionHandler/IVersionHandler';
 
 export interface BasicGroupConfiguration {
@@ -24,7 +25,9 @@ export interface IGroupFactory {
    *
    * @param version
    */
-  generateVersionHandler(version: BasicGroupConfiguration): Promise<IVersionHandler>;
+  generateVersionHandler(
+    version: BasicGroupConfiguration,
+  ): Promise<IVersionHandler>;
 
   /**
    * Generates a version handler and attaches it to the group factory.

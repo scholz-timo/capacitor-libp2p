@@ -1,11 +1,10 @@
-import { IPackageSeparator } from "../../../definition/PackageSeparator/IPackageSeparator";
+import type { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
 
 export class RawSeparator implements IPackageSeparator {
-    separate(_previous: Uint8Array, current: Uint8Array): Uint8Array[] {
-        return [current, new Uint8Array()];
-    }
-    formatMessage(message: Uint8Array): Uint8Array {
-        return message;
-    }
-
+  separate(_previous: Uint8Array, current: Uint8Array): Uint8Array[] {
+    return [current, new Uint8Array()];
+  }
+  formatMessage(message: Uint8Array): Uint8Array {
+    return message;
+  }
 }

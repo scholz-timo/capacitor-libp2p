@@ -1,3 +1,4 @@
+import { RawSeparator } from '../../common/PackageSeparator/implementation/RawSeparator';
 import type {
   BasicGroupConfiguration,
   IGroup,
@@ -7,7 +8,6 @@ import type { IVersionHandler } from '../../definition/Group/VersionHandler/IVer
 
 import { Group } from './Group';
 import { VersionHandler } from './VersionHandler/VersionHandler';
-import { RawSeparator } from '../../common/PackageSeparator/implementation/RawSeparator';
 
 const myRawSeparator = new RawSeparator();
 
@@ -19,7 +19,9 @@ export class GroupFactory implements IGroupFactory {
 
   constructor(private name: string) {}
 
-  generateVersionHandler(configuration: BasicGroupConfiguration): Promise<IVersionHandler>;
+  generateVersionHandler(
+    configuration: BasicGroupConfiguration,
+  ): Promise<IVersionHandler>;
   generateVersionHandler(
     configuration: BasicGroupConfiguration,
     initializer: (handler: IVersionHandler) => any,
@@ -32,7 +34,10 @@ export class GroupFactory implements IGroupFactory {
       throw new Error('Duplicate version registration...');
     }
 
-    const versionHandler = new VersionHandler(version, separator ?? myRawSeparator);
+    const versionHandler = new VersionHandler(
+      version,
+      separator ?? myRawSeparator,
+    );
 
     if (initializer) {
       /* eslint-disable */

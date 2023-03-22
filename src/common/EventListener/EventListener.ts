@@ -12,8 +12,8 @@ export class EventListener<
   /* eslint-disable */
   TypeRecord extends BasicTypeRecord<EventList> = {},
   /* eslint-enable */
-  DefaultEventCallbackParams extends (any[])|undefined = undefined,
-  SpecialOnArgs extends (any[])|undefined = undefined,
+  DefaultEventCallbackParams extends any[] | undefined = undefined,
+  SpecialOnArgs extends any[] | undefined = undefined,
 > implements
     IEventListener<
       EventList,
@@ -35,9 +35,18 @@ export class EventListener<
 
   protected async basicEmit<T extends keyof EventList>(
     event: T,
-    callbackParams: EventParameters<EventList, T, TypeRecord, DefaultEventCallbackParams>,
-    otherArgs: SpecialOnArgs extends any[] ? Exclude<SpecialOnArgs, undefined> : undefined,
-  ): Promise<Array<{isError: false, data: any } | { isError: true, error: any }>> {
+    callbackParams: EventParameters<
+      EventList,
+      T,
+      TypeRecord,
+      DefaultEventCallbackParams
+    >,
+    otherArgs: SpecialOnArgs extends any[]
+      ? Exclude<SpecialOnArgs, undefined>
+      : undefined,
+  ): Promise<
+    ({ isError: false; data: any } | { isError: true; error: any })[]
+  > {
     const events = Object.entries(this.eventListeners)
       .filter(([key]) => (Number(event) & Number(key)) === Number(key))
       .map(([, events]) => events)
@@ -50,16 +59,23 @@ export class EventListener<
           return true;
         }
 
-        return otherArgs?.map((otherArg, index) => {
-          if (otherArg === undefined) {
-            return false;
-          }
+        return (
+          otherArgs
+            ?.map((otherArg, index) => {
+              if (otherArg === undefined) {
+                return false;
+              }
 
-          return !isEqual(otherArg, event.parameters?.[index]);
-        }).filter(Boolean).length === 0;
+              return !isEqual(otherArg, event.parameters?.[index]);
+            })
+            .filter(Boolean).length === 0
+        );
       });
 
-    const responses: Array<{isError: false, data: any } | { isError: true, error: any }> = [];
+    const responses: (
+      | { isError: false; data: any }
+      | { isError: true; error: any }
+    )[] = [];
     for (const event of eventsToCall) {
       try {
         responses.push({

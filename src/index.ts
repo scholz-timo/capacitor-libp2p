@@ -1,10 +1,8 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 
-import { P2PProviderPlugin } from './definitions';
-import type { P2PProviderAdapter } from './definitions';
+import type { P2PProviderPlugin, P2PProviderAdapter } from './definitions';
 import { P2PProviderNative } from './native/P2PProviderNative';
 import { P2PProviderWeb } from './web/P2PProviderWeb';
-
 
 export * from './definitions';
 
@@ -15,10 +13,11 @@ export * from './definition/Protocol/enum/StreamDirection';
 export * from './definition/Protocol/enum/ProtocolRequestHandlerResponse';
 
 const createP2PProviderPlugin = (): P2PProviderPlugin => {
-  if (Capacitor.getPlatform() === "web") {
+  if (Capacitor.getPlatform() === 'web') {
     return new P2PProviderWeb();
   } else {
-    const P2PProviderAdapter = registerPlugin<P2PProviderAdapter>('P2PProvider');
+    const P2PProviderAdapter =
+      registerPlugin<P2PProviderAdapter>('P2PProvider');
     return new P2PProviderNative(P2PProviderAdapter);
   }
 };

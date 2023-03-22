@@ -1,6 +1,7 @@
 import { multiaddr } from '@multiformats/multiaddr';
 import type { Libp2p } from 'libp2p';
 
+import { EventListener } from '../../common/EventListener/EventListener';
 import type { IConnection } from '../../definition/ConnectionHandler/Connection/IConnection';
 import { ConnectionHandlerStatus } from '../../definition/ConnectionHandler/ConnectionHandlerStatus';
 import type {
@@ -10,7 +11,6 @@ import type {
 import type { IStream } from '../../definition/ConnectionHandler/Stream/IStream';
 import type { IGroup } from '../../definition/Group/IGroup';
 import type { IVersionHandler } from '../../definition/Group/VersionHandler/IVersionHandler';
-import { EventListener } from '../../common/EventListener/EventListener';
 
 import { Connection } from './Connection/Connection';
 import { Stream } from './Stream/Stream';
@@ -19,7 +19,6 @@ export class ConnectionHandler extends EventListener<
   IConnectionHandlerEventTypes,
   ConnectionHandlerEventStructure
 > {
-  
   private status: ConnectionHandlerStatus = ConnectionHandlerStatus.STOPPED;
 
   constructor(private connection: Libp2p) {
@@ -34,7 +33,7 @@ export class ConnectionHandler extends EventListener<
     this.status = ConnectionHandlerStatus.STARTING;
     try {
       await this.connection.start();
-    } catch(error) {
+    } catch (error) {
       this.status = ConnectionHandlerStatus.STOPPED;
       throw error;
     }
@@ -52,7 +51,7 @@ export class ConnectionHandler extends EventListener<
     this.status = ConnectionHandlerStatus.STOPPING;
     try {
       await this.connection.stop();
-    } catch(error) {
+    } catch (error) {
       this.status = ConnectionHandlerStatus.STARTED;
       throw error;
     }
@@ -67,7 +66,7 @@ export class ConnectionHandler extends EventListener<
   async hangUp(address: string): Promise<void> {
     await this.connection.hangUp(multiaddr(address));
   }
-  
+
   async getMyConnections(): Promise<IConnection[]> {
     return this.connection
       .getConnections()

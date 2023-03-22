@@ -2,13 +2,13 @@ import type {
   IEventListener,
   ReverseMap,
 } from '../../EventListener/IEventListener';
+import type { IPackageSeparator } from '../../PackageSeparator/IPackageSeparator';
 
 import type { VersionHandlerClosedEvent } from './event/VersionHandlerClosedEvent';
 import type { VersionHandlerDataEvent } from './event/VersionHandlerDataEvent';
 import type { VersionHandlerErrorEvent } from './event/VersionHandlerErrorEvent';
 import type { VersionHandlerReadyEvent } from './event/VersionHandlerReadyEvent';
 import type { VersionHandlerEventType } from './event/enum/VersionHandlerEventType';
-import { IPackageSeparator } from '../../PackageSeparator/IPackageSeparator';
 
 export type IVersionHandlerEventTypes = ReverseMap<
   typeof VersionHandlerEventType

@@ -1,11 +1,9 @@
-
-import { P2PProviderAdapter } from '../../../definitions';
-import { StreamEventType } from '../../../definition/ConnectionHandler/Stream/event/enum/StreamEventType';
 import { AStream } from '../../../common/ConnectionHandler/Stream/AStream';
-import { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
+import { StreamEventType } from '../../../definition/ConnectionHandler/Stream/event/enum/StreamEventType';
+import type { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
+import type { P2PProviderAdapter } from '../../../definitions';
 
 export class Stream extends AStream {
-  
   protected getPackageSeparator(): IPackageSeparator {
     throw new Error('Method not implemented.');
   }
@@ -18,7 +16,6 @@ export class Stream extends AStream {
     super();
 
     this.adapter.createLibP2PStreamListener(({ id, data, event }) => {
-
       if (id !== this.id) {
         return;
       }
@@ -26,7 +23,7 @@ export class Stream extends AStream {
       if ((event & StreamEventType.data) === StreamEventType.data) {
         this.onData(data);
       }
-      
+
       if ((event & StreamEventType.closed) === StreamEventType.closed) {
         this.onClosed();
       }

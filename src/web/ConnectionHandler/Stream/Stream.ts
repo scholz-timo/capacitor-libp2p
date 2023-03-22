@@ -1,12 +1,13 @@
 import type { Stream as P2PStream } from '@libp2p/interface-connection';
-import { pushable, Pushable } from "it-pushable";
-import { pipe } from "it-pipe";
-import { AStream } from "../../../common/ConnectionHandler/Stream/AStream";
-import { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
-import { IVersionHandler } from '../../../definition/Group/VersionHandler/IVersionHandler';
+import { pipe } from 'it-pipe';
+import type { Pushable } from 'it-pushable';
+import { pushable } from 'it-pushable';
+
+import { AStream } from '../../../common/ConnectionHandler/Stream/AStream';
+import type { IVersionHandler } from '../../../definition/Group/VersionHandler/IVersionHandler';
+import type { IPackageSeparator } from '../../../definition/PackageSeparator/IPackageSeparator';
 
 export class Stream extends AStream {
-
   protected getPackageSeparator(): IPackageSeparator {
     return this.versionHandler.getPackageSeparator();
   }
@@ -16,13 +17,13 @@ export class Stream extends AStream {
   constructor(
     private stream: P2PStream,
     protected readonly address: string,
-    private versionHandler: IVersionHandler
+    private versionHandler: IVersionHandler,
   ) {
     super();
 
     this.pushStream = pushable();
 
-    pipe(this.stream, async (source) => {
+    pipe(this.stream, async source => {
       for await (const dataGroup of source) {
         for (const data of dataGroup) {
           this.onData(data);
@@ -33,7 +34,7 @@ export class Stream extends AStream {
     pipe(this.pushStream, this.stream);
   }
 
-  async send(data: Uint8Array) {
+  async send(data: Uint8Array): Promise<void> {
     this.pushStream.push(data);
   }
 

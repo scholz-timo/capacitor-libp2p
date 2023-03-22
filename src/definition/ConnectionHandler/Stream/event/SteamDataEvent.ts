@@ -8,8 +8,8 @@ export interface StreamDataEvent
   extends EventStructure<StreamEventType.data>,
     WithAddress,
     WithData {
-      /**
-       * If data was not send completed, partial is true, otherwise false.
-       */
-      partial: boolean;
-    }
+  /**
+   * If data was not send completed, partial is true, otherwise false.
+   */
+  partial: boolean;
+}
