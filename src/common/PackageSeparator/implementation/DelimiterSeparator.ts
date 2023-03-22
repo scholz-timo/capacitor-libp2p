@@ -71,9 +71,11 @@ function boyerMoore(pattern: Uint8Array) {
 
 export class DelimiterSeparator implements IPackageSeparator {
   private search: ReturnType<typeof boyerMoore>;
+  private searchLength: number;
 
   constructor(pattern: Uint8Array) {
     this.search = boyerMoore(pattern);
+    this.searchLength = pattern.length;
   }
 
   private merge(arr0: Uint8Array, arr1: Uint8Array): Uint8Array {
@@ -103,11 +105,12 @@ export class DelimiterSeparator implements IPackageSeparator {
     }
 
     // Omit one more, so that all the others can get triggered as events.
-    if (index === current.length) {
+    if (previous_index === current.length - (this.searchLength - 1)) {
       results.push(new Uint8Array());
     }
 
     if (results.length !== 0) {
+      console.log(previous_index, current.length, this.searchLength);
       return results;
     }
 
