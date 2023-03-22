@@ -1,4 +1,3 @@
-
 export interface IProtocolDataStorage {
-    getRaw(): Uint8Array;
+  getRaw(): Uint8Array;
 }

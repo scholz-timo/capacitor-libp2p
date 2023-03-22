@@ -1,10 +1,33 @@
+import type {
+  IEventListener,
+  ReverseMap,
+} from '../../EventListener/IEventListener';
+import type { IPackageSeparator } from '../../PackageSeparator/IPackageSeparator';
 
-import { IProtocolRequestHandler } from '../../Protocol/IProtocolRequestHandler';
-import { VersionHandlerEventType } from './enum/VersionHandlerEventType';
-import { VersionHandlerEvent } from './VersionHandlerEvent';
-import { IPackageSeparator } from '../../PackageSeparator/IPackageSeparator';
+import type { VersionHandlerClosedEvent } from './event/VersionHandlerClosedEvent';
+import type { VersionHandlerDataEvent } from './event/VersionHandlerDataEvent';
+import type { VersionHandlerErrorEvent } from './event/VersionHandlerErrorEvent';
+import type { VersionHandlerReadyEvent } from './event/VersionHandlerReadyEvent';
+import type { VersionHandlerEventType } from './event/enum/VersionHandlerEventType';
 
-export interface IVersionHandler {
-    on<T extends VersionHandlerEventType>(event: T, impl: IProtocolRequestHandler<VersionHandlerEvent<T>>, separator: IPackageSeparator): IVersionHandler;
-    off<T extends VersionHandlerEventType>(event: T, impl: IProtocolRequestHandler<VersionHandlerEvent<T>>): IVersionHandler;
+export type IVersionHandlerEventTypes = ReverseMap<
+  typeof VersionHandlerEventType
+>;
+export type VersionHandlerEventStructure = {
+  [VersionHandlerEventType.closed]: [VersionHandlerClosedEvent];
+  [VersionHandlerEventType.data]: [VersionHandlerDataEvent];
+  [VersionHandlerEventType.error]: [VersionHandlerErrorEvent];
+  [VersionHandlerEventType.ready]: [VersionHandlerReadyEvent];
+};
+
+/**
+ * The version handler is an event bus.
+ */
+export interface IVersionHandler
+  extends IEventListener<
+    IVersionHandlerEventTypes,
+    VersionHandlerEventStructure
+  > {
+  getVersion(): string;
+  getPackageSeparator(): IPackageSeparator;
 }

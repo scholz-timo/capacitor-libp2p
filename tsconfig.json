@@ -4,7 +4,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "inlineSources": true,
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2017", "esnext.weakref", "es2019.array", "es2019.object"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -17,5 +17,6 @@
     "target": "es2017",
     "allowJs": true
   },
-  "files": ["src/index.ts"]
+  "files": ["src/index.ts"],
+  "exclude": ["dist"]
 }

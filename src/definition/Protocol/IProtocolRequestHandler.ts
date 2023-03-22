@@ -1,8 +1,11 @@
-import { IProtocolRequestStream } from "./IProtocolRequestStream";
-import { ProtocolRequestHandlerResponse } from "./enum/ProtocolRequestHandlerResponse";
+import type { IProtocolRequestStream } from './IProtocolRequestStream';
+import type { ProtocolRequestHandlerResponse } from './enum/ProtocolRequestHandlerResponse';
 
 export interface IProtocolRequestHandlerObj {
-    readonly stream: IProtocolRequestStream;
+  readonly stream: IProtocolRequestStream;
 }
 
-export type IProtocolRequestHandler<Event> = (event: Event, content: IProtocolRequestHandlerObj) => ProtocolRequestHandlerResponse;
+export type IProtocolRequestHandler<Event> = (
+  event: Event,
+  content: IProtocolRequestHandlerObj,
+) => ProtocolRequestHandlerResponse;
