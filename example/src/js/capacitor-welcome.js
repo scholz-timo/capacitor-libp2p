@@ -81,46 +81,44 @@ const showMessage = message => {
   showMessage('Initializing modules...');
 
   const transformers = await P2PProvider.ensureTransformer();
-  const separators = await P2PProvider.ensurePackageSeparator();
+  //const separators = await P2PProvider.ensurePackageSeparator();
 
   // Host side
   // Create a group factory for the "echo" protocol.
   const myGroupFactory = await P2PProvider.createGroupFactory('echo');
   // Create a version handler, that will handle version 1.0.0 of the echo protocol.
   const versionHandler = await myGroupFactory.generateVersionHandler(
-    { version: '1.0.0', /*separator: separators.delimiter(transformers.string.toUInt8('\n'))*/ },
+    {
+      version:
+        '1.0.0' /*separator: separators.delimiter(transformers.string.toUInt8('\n'))*/,
+    },
     versionHandler => {
       // Create a listener on all events.
       // This is a binary mask, so you can define the events however you want, by just registering one handler.
-      versionHandler.on(
-        VersionHandlerEventType.all,
-        async (event, content) => {
-          // Only allow inbound connections.
-          if (
-            content.stream.getStreamDirection() === StreamDirection.Outbound
-          ) {
-            // Close the connection, when it is going out.
-            return ProtocolRequestHandlerResponse.Close;
-          }
-
-          // Handle different events.
-          switch (event.type) {
-            // We got a new connection
-            case VersionHandlerEventType.ready:
-              return ProtocolRequestHandlerResponse.StayOpen;
-
-            // We received some data.
-            case VersionHandlerEventType.data:
-              // Send the same data back, close connection afterwards.
-              await content.stream.send(content.stream.getContent());
-            case VersionHandlerEventType.error:
-            // TODO: Handle your error here.
-            // Our example implementation will just close the connection.
-            default:
-              return ProtocolRequestHandlerResponse.Close;
-          }
+      versionHandler.on(VersionHandlerEventType.all, async (event, content) => {
+        // Only allow inbound connections.
+        if (content.stream.getStreamDirection() === StreamDirection.Outbound) {
+          // Close the connection, when it is going out.
+          return ProtocolRequestHandlerResponse.Close;
         }
-      ); // Call data event on "\n" in packets (Split them up or join them so that they end with "\n")
+
+        // Handle different events.
+        switch (event.type) {
+          // We got a new connection
+          case VersionHandlerEventType.ready:
+            return ProtocolRequestHandlerResponse.StayOpen;
+
+          // We received some data.
+          case VersionHandlerEventType.data:
+            // Send the same data back, close connection afterwards.
+            await content.stream.send(content.stream.getContent());
+          case VersionHandlerEventType.error:
+          // TODO: Handle your error here.
+          // Our example implementation will just close the connection.
+          default:
+            return ProtocolRequestHandlerResponse.Close;
+        }
+      }); // Call data event on "\n" in packets (Split them up or join them so that they end with "\n")
     },
   );
 
@@ -186,7 +184,7 @@ const showMessage = message => {
 
     showMessage(`Opened stream for protocol... to "${input.value}"`);
 
-    stream.on(VersionHandlerEventType.data, (event) => {
+    stream.on(VersionHandlerEventType.data, event => {
       try {
         // Transform the binary representation(UInt8Array) to string and display it + address.
 
