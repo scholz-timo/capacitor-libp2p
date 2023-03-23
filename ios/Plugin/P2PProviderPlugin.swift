@@ -10,7 +10,13 @@ public class P2PProviderPlugin: CAPPlugin {
     private let implementation = P2PProvider()
 
     @objc func createGroup(_ call: CAPPluginCall) throws {
-        let value = call.getString("value") ?? ""
+        let value = call.getString("name") ?? ""
+        
+        if (value == "") {
+            call.reject("You need to enter a name.")
+            return
+        }
+        
         call.resolve([
             "value": try implementation.echo(value)
         ])
