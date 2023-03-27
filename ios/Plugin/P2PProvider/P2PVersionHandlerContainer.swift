@@ -11,8 +11,10 @@ import Capacitor
 @objc class P2PVersionHandlerContainer: NSObject {
     private var container = [UUID:P2PVersionHandler]()
     
-    @objc func createInstance() throws -> UUID {
-        
+    @objc func createInstance(name: String) throws -> UUID {
+        let myUUID = UUID()
+        self.container[myUUID] = P2PVersionHandler(name: name)
+        return myUUID
     }
     
     func getInstance(uuid: String) -> P2PVersionHandler? {

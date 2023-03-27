@@ -73,6 +73,8 @@ import LibP2PCore
         
         let myUUID = UUID()
         self.myStreams[myUUID] = StreamContainer(stream: stream)
+        
+        return myUUID
     }
     
     public func closeStream(uuid: String) async throws {
@@ -89,9 +91,27 @@ import LibP2PCore
         self.myStreams[uuid] = nil
     }
     
-    public func destroy() {
+    public func getStream(uuid: String) -> LibP2PCore.Stream? {
+        guard let myUUID = UUID(uuidString: uuid) else {
+            return nil;
+        }
+        
+        return self.getStream(uuid: myUUID)
+    }
+    
+    public func getStream(uuid: UUID) -> LibP2PCore.Stream? {
+        return self.myStreams[uuid]?.getStream();
+    }
+    
+    public func destroy() async {
         guard self.app.isRunning else {
             return
+        }
+        
+        for key in self.myStreams.keys {
+            do {
+                try await self.closeStream(uuid: key)
+            } catch {}
         }
         
         self.stop()

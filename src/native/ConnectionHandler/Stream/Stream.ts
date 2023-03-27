@@ -9,7 +9,8 @@ export class Stream extends AStream {
   }
 
   constructor(
-    private id: number,
+    private id: string,
+    private streamId: string, 
     private adapter: P2PProviderAdapter,
     protected readonly address: string,
   ) {
@@ -35,10 +36,10 @@ export class Stream extends AStream {
   }
 
   public async send(data: Uint8Array): Promise<void> {
-    await this.adapter.sendDataToStream({ id: this.id, data });
+    await this.adapter.sendDataToStream({ id: this.id, streamId: this.streamId, data });
   }
 
   async close(): Promise<void> {
-    await this.adapter.closeStream({ id: this.id });
+    await this.adapter.closeStream({ id: this.id, streamId: this.streamId });
   }
 }

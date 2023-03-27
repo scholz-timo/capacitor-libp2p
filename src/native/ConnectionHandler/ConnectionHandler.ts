@@ -11,6 +11,7 @@ import type { IVersionHandler } from '../../definition/Group/VersionHandler/IVer
 import type { P2PProviderAdapter } from '../../definitions';
 
 import { Connection } from './Connection/Connection';
+import { Stream } from "./Stream/Stream";
 
 export class ConnectionHandler extends EventListener<
   IConnectionHandlerEventTypes,
@@ -57,8 +58,8 @@ export class ConnectionHandler extends EventListener<
     this.status = ConnectionHandlerStatus.STOPPED;
   }
   async dial(address: string): Promise<IConnection> {
-    const { id } = await this.adapter.dial({ id: this.id, address });
-    return new Connection(this.adapter, id, address) as any;
+    await this.adapter.dial({ id: this.id, address });
+    return new Connection(this.adapter, this.id, address) as any;
   }
 
   async hangUp(address: string): Promise<void> {
@@ -66,10 +67,10 @@ export class ConnectionHandler extends EventListener<
   }
 
   async getMyConnections(): Promise<IConnection[]> {
-    const { connections } = await this.adapter.getMyConnections({
+    const { addresses } = await this.adapter.getMyConnections({
       id: this.id,
     });
-    return Promise.all(connections.map(({ address }) => this.dial(address)));
+    return Promise.all(addresses.map((address) => this.dial(address)));
   }
 
   async getAddresses(): Promise<string[]> {
@@ -78,7 +79,7 @@ export class ConnectionHandler extends EventListener<
   }
 
   async getStreamForProtocol(
-    _address: string,
+    address: string,
     protocol: { group: IGroup; version: IVersionHandler },
   ): Promise<IStream> {
     // const connection = await this.dial(address);
@@ -89,8 +90,7 @@ export class ConnectionHandler extends EventListener<
       throw new Error('Internal error...');
     }
 
-    // TODO: cache.
-    //const { id } = await this.adapter.createLibP2PStream({ id: this.id, connectionId: (connection as any).getId(), groupId: (group as any).getId(), versionHandlerId: (version as any).getId() })
-    throw new Error('Not implemented.');
+    const { id } = await this.adapter.createLibP2PStream({ id: this.id, groupId: (group as any).getId(), versionHandlerId: (version as any).getId(), address })
+    return new Stream(this.id, id, this.adapter, address);
   }
 }

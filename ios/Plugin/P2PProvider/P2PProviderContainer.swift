@@ -69,16 +69,16 @@ import RoutingKit
         return self.containerStorage[uuid];
     }
     
-    public func removeInstance(uuid: String) {
+    public func removeInstance(uuid: String) async {
         guard let myUuid = UUID(uuidString: uuid) else {
             return;
         }
         
-        return self.removeInstance(uuid: myUuid)
+        return await self.removeInstance(uuid: myUuid)
     }
     
-    @objc public func removeInstance(uuid: UUID) {
-        self.getInstance(uuid: uuid)?.destroy()
+    @objc public func removeInstance(uuid: UUID) async {
+        await self.getInstance(uuid: uuid)?.destroy()
         self.containerStorage[uuid] = nil
     }
 }

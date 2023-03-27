@@ -33,16 +33,10 @@ export interface P2PProviderAdapter {
    * will open a new connection or return a existing connection.
    *
    * @param value.address The address to connect to. Is a multi-address.
-   * @param value.id The id of the libp2p instance.
+   * @param value.id The id of the libp2p(core) instance.
    * @returns The id of the connection.
    */
   dial(value: { address: string; id: string }): Promise<{ id: string }>;
-
-  /**
-   *
-   * @param value.id The id of the libp2p connection.
-   */
-  closeConnection(value: { id: string }): Promise<void>;
 
   /**
    * Will close a connection, if present.
@@ -54,9 +48,10 @@ export interface P2PProviderAdapter {
   /**
    * Will close a stream, if present.
    *
-   * @param value
+   * @param value.id The id of the libp2p(core) instance.
+   * @param value.streamId The id of the stream.
    */
-  closeStream(value: { id: string }): Promise<void>;
+  closeStream(value: { id: string; streamId: string }): Promise<void>;
 
   /**
    * Returns my connections.
@@ -70,7 +65,7 @@ export interface P2PProviderAdapter {
    */
   getMyConnections(value: {
     id: string;
-  }): Promise<{ connections: { address: string; id: string }[] }>;
+  }): Promise<{ addresses: string[] }>;
 
   /**
    * Return my own addresses.
@@ -97,7 +92,6 @@ export interface P2PProviderAdapter {
    */
   createLibP2PInstance(value: {
     groupIds: string[];
-    addresses?: string[];
   }): Promise<{ id: string }>;
 
   /**
@@ -124,7 +118,7 @@ export interface P2PProviderAdapter {
   /**
    * Creates a new stream for a given core(LibP2P) instance.
    *
-   * @param value.id The id of the given instance.
+   * @param value.id The id of the core(LibP2P) instance.
    * @param value.connectionId The id of the given connection.
    * @param value.groupId The id of the given group.
    * @param value.versionHandlerId The id of the given version handler.
@@ -133,19 +127,27 @@ export interface P2PProviderAdapter {
    */
   createLibP2PStream(value: {
     id: string;
-    connectionId: string;
+    address: string;
     groupId: string;
     versionHandlerId: string;
   }): Promise<{ id: string }>;
 
-  sendDataToStream(value: { id: string; data: Uint8Array }): Promise<void>;
+  /**
+   * Sends data to the given stream.
+   * 
+   * 
+   * @param value.id The id of the core(LibP2P) instance.
+   * @param value.streamId The id of the stream.
+   * @param value.data The data that should be sent.
+   */
+  sendDataToStream(value: { id: string; streamId: string; data: Uint8Array }): Promise<void>;
 
   /**
    * Destroys a given stream.
    *
    * @param value.id A valid stream id.
    */
-  destroyLibP2PStream(value: { id: string }): Promise<void>;
+  destroyLibP2PStream(value: { id: string; streamId: string }): Promise<void>;
 
   /**
    * Will emit an update to the callback, when a inbound connection tries to access the given protocol.
@@ -173,7 +175,9 @@ export interface P2PProviderAdapter {
    */
   sendVersionHandlerResponse(value: {
     id: string;
+    requestId: string;
     responseType: ProtocolRequestHandlerResponse;
+    data?: Uint8Array;
   }): Promise<void>;
 
   /**

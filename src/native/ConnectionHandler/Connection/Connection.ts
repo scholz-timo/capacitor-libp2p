@@ -25,8 +25,9 @@ export class Connection extends EventListener<
   }
 
   async close(): Promise<void> {
-    await this.adapter.closeConnection({
+    await this.adapter.hangUp({
       id: this.id,
+      address: this.source.address
     });
   }
 }

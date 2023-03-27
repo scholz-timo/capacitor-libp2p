@@ -21,6 +21,14 @@ typealias PromiseResolverType = (Result<Response<ByteBuffer>, Never>) -> Void
         self.name = name
     }
     
+    public func doHandleEvent(uuid: String, response: Response<ByteBuffer>) {
+        guard let myUUID = UUID(uuidString: uuid) else {
+            return
+        }
+        
+        self.doHandleEvent(uuid: myUUID, response: response)
+    }
+    
     public func doHandleEvent(uuid: UUID, response: Response<ByteBuffer>) {
         guard let promise = self.unhandeledEvents[uuid] else {
             return
