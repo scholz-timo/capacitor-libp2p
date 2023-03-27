@@ -18,7 +18,7 @@ export class ConnectionHandler extends EventListener<
 > {
   private status: ConnectionHandlerStatus = ConnectionHandlerStatus.STOPPED;
 
-  constructor(private adapter: P2PProviderAdapter, private id: number) {
+  constructor(private adapter: P2PProviderAdapter, private id: string) {
     super();
   }
 

@@ -14,7 +14,7 @@ export class Connection extends EventListener<
 
   constructor(
     private adapter: P2PProviderAdapter,
-    private id: number,
+    private id: string,
     address: string,
   ) {
     super();

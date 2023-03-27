@@ -8,7 +8,7 @@ import type { ITransformerGroup } from './definition/Tranformer/ITransformer';
 type P2PProviderAdapterStreamListenerCallback = (value: {
   event: StreamEventType;
   data: any;
-  id: number;
+  id: string;
 }) => any;
 
 /**
@@ -27,7 +27,7 @@ export interface P2PProviderAdapter {
   createGroup(value: {
     name: string;
     versionHandler: string[];
-  }): Promise<{ id: number }>;
+  }): Promise<{ id: string }>;
 
   /**
    * will open a new connection or return a existing connection.
@@ -36,27 +36,27 @@ export interface P2PProviderAdapter {
    * @param value.id The id of the libp2p instance.
    * @returns The id of the connection.
    */
-  dial(value: { address: string; id: number }): Promise<{ id: number }>;
+  dial(value: { address: string; id: string }): Promise<{ id: string }>;
 
   /**
    *
    * @param value.id The id of the libp2p connection.
    */
-  closeConnection(value: { id: number }): Promise<void>;
+  closeConnection(value: { id: string }): Promise<void>;
 
   /**
    * Will close a connection, if present.
    *
    * @param value.address The address to close. Is a multi-address.
    */
-  hangUp(value: { address: string; id: number }): Promise<void>;
+  hangUp(value: { address: string; id: string }): Promise<void>;
 
   /**
    * Will close a stream, if present.
    *
    * @param value
    */
-  closeStream(value: { id: number }): Promise<void>;
+  closeStream(value: { id: string }): Promise<void>;
 
   /**
    * Returns my connections.
@@ -69,15 +69,15 @@ export interface P2PProviderAdapter {
    * @returns connections[].id
    */
   getMyConnections(value: {
-    id: number;
-  }): Promise<{ connections: { address: string; id: number }[] }>;
+    id: string;
+  }): Promise<{ connections: { address: string; id: string }[] }>;
 
   /**
    * Return my own addresses.
    *
    * @param value.id The id of the core(LibP2P) instance.
    */
-  getAddresses(value: { id: number }): Promise<{ addresses: string[] }>;
+  getAddresses(value: { id: string }): Promise<{ addresses: string[] }>;
 
   /**
    * Creates an new version handler
@@ -96,30 +96,30 @@ export interface P2PProviderAdapter {
    * @returns The id of the core(LibP2P) instance.
    */
   createLibP2PInstance(value: {
-    groupIds: number[];
+    groupIds: string[];
     addresses?: string[];
-  }): Promise<{ id: number }>;
+  }): Promise<{ id: string }>;
 
   /**
    * Destroys a core(LibP2P) instance.
    *
    * @param value.id The id.
    */
-  destroyLibP2PInstance(value: { id: number }): Promise<void>;
+  destroyLibP2PInstance(value: { id: string }): Promise<void>;
 
   /**
    * Starts accepting/sending connections.
    *
    * @param value.id The id of the core(LibP2P) instance to start.
    */
-  startP2PInstance(value: { id: number }): Promise<void>;
+  startP2PInstance(value: { id: string }): Promise<void>;
 
   /**
    * Stops accepting/sending connections.
    *
    * @param value.id The id of the core(LibP2P) instance to start.
    */
-  stopP2PInstance(value: { id: number }): Promise<void>;
+  stopP2PInstance(value: { id: string }): Promise<void>;
 
   /**
    * Creates a new stream for a given core(LibP2P) instance.
@@ -132,20 +132,20 @@ export interface P2PProviderAdapter {
    * @returns A new or an existing stream id.
    */
   createLibP2PStream(value: {
-    id: number;
-    connectionId: number;
-    groupId: number;
-    versionHandlerId: number;
-  }): Promise<{ id: number }>;
+    id: string;
+    connectionId: string;
+    groupId: string;
+    versionHandlerId: string;
+  }): Promise<{ id: string }>;
 
-  sendDataToStream(value: { id: number; data: Uint8Array }): Promise<void>;
+  sendDataToStream(value: { id: string; data: Uint8Array }): Promise<void>;
 
   /**
    * Destroys a given stream.
    *
    * @param value.id A valid stream id.
    */
-  destroyLibP2PStream(value: { id: number }): Promise<void>;
+  destroyLibP2PStream(value: { id: string }): Promise<void>;
 
   /**
    * Will emit an update to the callback, when a inbound connection tries to access the given protocol.
@@ -159,8 +159,8 @@ export interface P2PProviderAdapter {
    */
   onVersionHandlerUpdate(
     versionHandlerUpdateCallback: (value: {
-      id: number;
-      updateId: number;
+      id: string;
+      updateId: string;
       data: any;
     }) => any,
   ): Promise<any> & any;

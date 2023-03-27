@@ -6,10 +6,10 @@ export class Group implements Group {
   constructor(
     private name: string,
     private readonly versions: Record<string, VersionHandler | IVersionHandler>,
-    private id: number,
+    private id: string,
   ) {}
 
-  getId(): number {
+  getId(): string {
     return this.id;
   }
 
