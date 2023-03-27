@@ -16,6 +16,13 @@
 		50ADFFA42020D75100D50D53 /* Capacitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFFA52020D75100D50D53 /* Capacitor.framework */; };
 		50ADFFA82020EE4F00D50D53 /* P2PProviderPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFFA72020EE4F00D50D53 /* P2PProviderPlugin.m */; };
 		50E1A94820377CB70090CE1A /* P2PProviderPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E1A94720377CB70090CE1A /* P2PProviderPlugin.swift */; };
+		99D08FD429CCCFCA004D98C6 /* P2PProviderContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FD329CCCFCA004D98C6 /* P2PProviderContainer.swift */; };
+		99D08FD729CCD141004D98C6 /* LibP2PNoise in Frameworks */ = {isa = PBXBuildFile; productRef = 99D08FD629CCD141004D98C6 /* LibP2PNoise */; };
+		99D08FDA29CCD173004D98C6 /* LibP2PMPLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 99D08FD929CCD173004D98C6 /* LibP2PMPLEX */; };
+		99D08FDC29CCD957004D98C6 /* P2PGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FDB29CCD957004D98C6 /* P2PGroup.swift */; };
+		99D08FDE29CD81A4004D98C6 /* P2PVersionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FDD29CD81A4004D98C6 /* P2PVersionHandler.swift */; };
+		99D08FE029CF003F004D98C6 /* P2PVersionHandlerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FDF29CF003F004D98C6 /* P2PVersionHandlerContainer.swift */; };
+		99D08FE229CF006E004D98C6 /* P2PGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FE129CF006E004D98C6 /* P2PGroupContainer.swift */; };
 		99DA95FA29AD44FF0007AE10 /* LibP2PWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 99DA95F929AD44FF0007AE10 /* LibP2PWebSocket */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +51,11 @@
 		5E23F77F099397094342571A /* Pods-Plugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plugin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Plugin/Pods-Plugin.debug.xcconfig"; sourceTree = "<group>"; };
 		91781294A431A2A7CC6EB714 /* Pods-Plugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plugin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Plugin/Pods-Plugin.release.xcconfig"; sourceTree = "<group>"; };
 		96ED1B6440D6672E406C8D19 /* Pods-PluginTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PluginTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PluginTests/Pods-PluginTests.debug.xcconfig"; sourceTree = "<group>"; };
+		99D08FD329CCCFCA004D98C6 /* P2PProviderContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PProviderContainer.swift; sourceTree = "<group>"; };
+		99D08FDB29CCD957004D98C6 /* P2PGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PGroup.swift; sourceTree = "<group>"; };
+		99D08FDD29CD81A4004D98C6 /* P2PVersionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PVersionHandler.swift; sourceTree = "<group>"; };
+		99D08FDF29CF003F004D98C6 /* P2PVersionHandlerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PVersionHandlerContainer.swift; sourceTree = "<group>"; };
+		99D08FE129CF006E004D98C6 /* P2PGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PGroupContainer.swift; sourceTree = "<group>"; };
 		F65BB2953ECE002E1EF3E424 /* Pods-PluginTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PluginTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PluginTests/Pods-PluginTests.release.xcconfig"; sourceTree = "<group>"; };
 		F6753A823D3815DB436415E3 /* Pods_PluginTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PluginTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -53,8 +65,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99D08FDA29CCD173004D98C6 /* LibP2PMPLEX in Frameworks */,
 				50ADFFA42020D75100D50D53 /* Capacitor.framework in Frameworks */,
 				03FC29A292ACC40490383A1F /* Pods_Plugin.framework in Frameworks */,
+				99D08FD729CCD141004D98C6 /* LibP2PNoise in Frameworks */,
 				99DA95FA29AD44FF0007AE10 /* LibP2PWebSocket in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,8 +108,8 @@
 		50ADFF8A201F53D600D50D53 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				99D08FD229CCCF2C004D98C6 /* P2PProvider */,
 				50E1A94720377CB70090CE1A /* P2PProviderPlugin.swift */,
-				2F98D68124C9AAE400613A4C /* P2PProvider.swift */,
 				50ADFF8B201F53D600D50D53 /* P2PProviderPlugin.h */,
 				50ADFFA72020EE4F00D50D53 /* P2PProviderPlugin.m */,
 				50ADFF8C201F53D600D50D53 /* Info.plist */,
@@ -121,6 +135,19 @@
 				F65BB2953ECE002E1EF3E424 /* Pods-PluginTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		99D08FD229CCCF2C004D98C6 /* P2PProvider */ = {
+			isa = PBXGroup;
+			children = (
+				2F98D68124C9AAE400613A4C /* P2PProvider.swift */,
+				99D08FD329CCCFCA004D98C6 /* P2PProviderContainer.swift */,
+				99D08FDD29CD81A4004D98C6 /* P2PVersionHandler.swift */,
+				99D08FDF29CF003F004D98C6 /* P2PVersionHandlerContainer.swift */,
+				99D08FE129CF006E004D98C6 /* P2PGroupContainer.swift */,
+				99D08FDB29CCD957004D98C6 /* P2PGroup.swift */,
+			);
+			path = P2PProvider;
 			sourceTree = "<group>";
 		};
 		A797B9EFA3DCEFEA1FBB66A9 /* Frameworks */ = {
@@ -164,6 +191,8 @@
 			name = Plugin;
 			packageProductDependencies = (
 				99DA95F929AD44FF0007AE10 /* LibP2PWebSocket */,
+				99D08FD629CCD141004D98C6 /* LibP2PNoise */,
+				99D08FD929CCD173004D98C6 /* LibP2PMPLEX */,
 			);
 			productName = Plugin;
 			productReference = 50ADFF88201F53D600D50D53 /* Plugin.framework */;
@@ -222,6 +251,8 @@
 			mainGroup = 50ADFF7E201F53D600D50D53;
 			packageReferences = (
 				99DA95F829AD44FF0007AE10 /* XCRemoteSwiftPackageReference "swift-libp2p-websocket" */,
+				99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */,
+				99D08FD829CCD173004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-mplex" */,
 			);
 			productRefGroup = 50ADFF89201F53D600D50D53 /* Products */;
 			projectDirPath = "";
@@ -315,8 +346,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				50E1A94820377CB70090CE1A /* P2PProviderPlugin.swift in Sources */,
+				99D08FD429CCCFCA004D98C6 /* P2PProviderContainer.swift in Sources */,
 				2F98D68224C9AAE500613A4C /* P2PProvider.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* P2PProviderPlugin.m in Sources */,
+				99D08FE229CF006E004D98C6 /* P2PGroupContainer.swift in Sources */,
+				99D08FE029CF003F004D98C6 /* P2PVersionHandlerContainer.swift in Sources */,
+				99D08FDE29CD81A4004D98C6 /* P2PVersionHandler.swift in Sources */,
+				99D08FDC29CCD957004D98C6 /* P2PGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +436,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -459,6 +496,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -491,7 +529,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -521,7 +559,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -595,6 +633,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swift-libp2p/swift-libp2p-noise";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+		99D08FD829CCD173004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-mplex" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swift-libp2p/swift-libp2p-mplex";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
 		99DA95F829AD44FF0007AE10 /* XCRemoteSwiftPackageReference "swift-libp2p-websocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swift-libp2p/swift-libp2p-websocket.git";
@@ -606,6 +660,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		99D08FD629CCD141004D98C6 /* LibP2PNoise */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */;
+			productName = LibP2PNoise;
+		};
+		99D08FD929CCD173004D98C6 /* LibP2PMPLEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 99D08FD829CCD173004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-mplex" */;
+			productName = LibP2PMPLEX;
+		};
 		99DA95F929AD44FF0007AE10 /* LibP2PWebSocket */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 99DA95F829AD44FF0007AE10 /* XCRemoteSwiftPackageReference "swift-libp2p-websocket" */;
