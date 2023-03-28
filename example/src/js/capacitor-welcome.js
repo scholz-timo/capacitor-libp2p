@@ -89,8 +89,8 @@ const showMessage = message => {
   // Create a version handler, that will handle version 1.0.0 of the echo protocol.
   const versionHandler = await myGroupFactory.generateVersionHandler(
     {
-      version:
-        '1.0.0' /*separator: separators.delimiter(transformers.string.toUInt8('\n'))*/,
+      version: '1.0.0' 
+      /*separator: separators.delimiter(transformers.string.toUInt8('\n'))*/,
     },
     versionHandler => {
       // Create a listener on all events.

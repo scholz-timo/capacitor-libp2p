@@ -1,3 +1,4 @@
+import { Plugin } from '@capacitor/core';
 import type { IConnectionHandler } from './definition/ConnectionHandler/IConnectionHandler';
 import type { StreamEventType } from './definition/ConnectionHandler/Stream/event/enum/StreamEventType';
 import type { IGroupFactory, IGroup } from './definition/Group/IGroup';
@@ -18,7 +19,7 @@ type P2PProviderAdapterStreamListenerCallback = (value: {
  * This structure is only implemented for (android/ios).
  * (These are the bindings)
  */
-export interface P2PProviderAdapter {
+export interface P2PProviderAdapter extends Plugin {
   /**
    * Creates a group and stores it into the plugin.
    *

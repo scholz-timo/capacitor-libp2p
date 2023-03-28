@@ -7,11 +7,12 @@ import Capacitor
  */
 @objc(P2PProviderPlugin)
 public class P2PProviderPlugin: CAPPlugin {
+    
     private let p2pProviderContainer = P2PProviderContainer()
     private let p2pGroupContainer = P2PGroupContainer()
     private let p2pVersionHandlerContainer = P2PVersionHandlerContainer()
 
-    @objc func createGroup(_ call: CAPPluginCall) throws {
+    @objc public func createGroup(_ call: CAPPluginCall) throws {
         let name = call.getString("name") ?? ""
         let rawVersionHandlerIds = call.getArray("versionHandler")?.capacitor.replacingNullValues() as? [String?]
         
@@ -39,7 +40,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func dial(_ call: CAPPluginCall) async throws {
+    @objc public func dial(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         
@@ -59,7 +60,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func hangUp(_ call: CAPPluginCall) async throws {
+    @objc public func hangUp(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         
@@ -77,7 +78,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func closeStream(_ call: CAPPluginCall) async throws {
+    @objc public func closeStream(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         
@@ -91,7 +92,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func getMyConnections(_ call: CAPPluginCall) async throws {
+    @objc public func getMyConnections(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -104,7 +105,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func getAddresses(_ call: CAPPluginCall) async throws {
+    @objc public func getAddresses(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -117,7 +118,12 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func createVersionHandler(_ call: CAPPluginCall) throws {
+    @objc public func createVersionHandler(_ call: CAPPluginCall) throws {
+        
+        call.resolve([
+            "id": "example-hello-world"
+        ])
+        
         let versionIdentification = call.getString("version") ?? ""
         
         if (versionIdentification == "") {
@@ -132,7 +138,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func createLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func createLibP2PInstance(_ call: CAPPluginCall) throws {
         let groupIds = call.getArray("groupIds")?.capacitor.replacingNullValues() as? [String?] ?? []
         
         call.resolve([
@@ -140,7 +146,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func destroyLibP2PInstance(_ call: CAPPluginCall) async throws {
+    @objc public func destroyLibP2PInstance(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         await self.p2pProviderContainer.removeInstance(uuid: libP2PInstanceId)
@@ -148,7 +154,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func startLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func startLibP2PInstance(_ call: CAPPluginCall) throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -160,7 +166,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func stopLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func stopLibP2PInstance(_ call: CAPPluginCall) throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -172,7 +178,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func createLibP2PStream(_ call: CAPPluginCall) async throws {
+    @objc public func createLibP2PStream(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         let groupId = call.getString("groupId") ?? ""
@@ -202,7 +208,7 @@ public class P2PProviderPlugin: CAPPlugin {
         ])
     }
 
-    @objc func sendDataToStream(_ call: CAPPluginCall) async throws {
+    @objc public func sendDataToStream(_ call: CAPPluginCall) async throws {
         let libP2PInstanceId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         let data = call.getArray("data") ?? []
@@ -217,7 +223,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func destroyLibP2PStream(_ call: CAPPluginCall) async throws {
+    @objc public func destroyLibP2PStream(_ call: CAPPluginCall) async throws {
         let connectionId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         
@@ -236,11 +242,11 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func onVersionHandlerUpdate(_ call: CAPPluginCall) throws {
+    @objc public func onVersionHandlerUpdate(_ call: CAPPluginCall) throws {
         call.keepAlive = true
     }
 
-    @objc func sendVersionHandlerResponse(_ call: CAPPluginCall) throws {
+    @objc public func sendVersionHandlerResponse(_ call: CAPPluginCall) throws {
         let versionHandlerId = call.getString("id") ?? ""
         let requestId = call.getString("requestId") ?? ""
         
@@ -254,7 +260,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc func createLibP2PStreamListener(_ call: CAPPluginCall) throws {
+    @objc public func createLibP2PStreamListener(_ call: CAPPluginCall) throws {
         call.keepAlive = true
     }
 }

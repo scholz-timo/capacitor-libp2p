@@ -3,7 +3,7 @@
 
 // Define the plugin using the CAP_PLUGIN Macro, and
 // each method the plugin supports using the CAP_PLUGIN_METHOD macro.
-CAP_PLUGIN(P2PProviderPlugin, "P2PProvider",
+CAP_PLUGIN(P2PProviderPlugin, "P2PProviderPlugin",
            CAP_PLUGIN_METHOD(createGroup, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(dial, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(closeConnection, CAPPluginReturnNone);

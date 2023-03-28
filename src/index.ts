@@ -17,7 +17,7 @@ const createP2PProviderPlugin = (): P2PProviderPlugin => {
     return new P2PProviderWeb();
   } else {
     const P2PProviderAdapter =
-      registerPlugin<P2PProviderAdapter>('P2PProvider');
+      registerPlugin<P2PProviderAdapter>('P2PProviderPlugin');
     return new P2PProviderNative(P2PProviderAdapter);
   }
 };
