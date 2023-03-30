@@ -131,7 +131,11 @@
       "async-kit": "AsyncKit",
       "console-kit": "ConsoleKit",
       "swift-log": "Logging",
-      "swift-metrics": "Metrics"
+      "swift-metrics": "Metrics",
+      "swift-noise": "Noise",
+      "swift-libp2p-noise": "LibP2PNoise",
+      "swift-libp2p-mplex": "LibP2PMPLEX",
+      "swift-libp2p-tcp": "LibP2PTCP"
     }
   }
 }

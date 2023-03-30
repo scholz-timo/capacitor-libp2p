@@ -75,7 +75,7 @@ export class GroupFactory implements IGroupFactory {
     const { id } = await this.P2PProviderAdapter.createGroup({
       name: this.name,
       versionHandler: Object.values(resolvedVersionHandlers).map(
-        versionHandler => versionHandler.id,
+        versionHandler => versionHandler.getId(),
       ),
     });
     return new Group(this.name, resolvedVersionHandlers, id);

@@ -9,8 +9,12 @@ export class VersionHandler extends EventListener<
   IVersionHandlerEventTypes,
   VersionHandlerEventStructure
 > {
-  constructor(public version: string, public id: string) {
+  constructor(public version: string, private id: string) {
     super();
+  }
+
+  getId() {
+    return this.id;
   }
 
   getPackageSeparator(): IPackageSeparator {

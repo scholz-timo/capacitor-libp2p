@@ -30,7 +30,7 @@ export class ConnectionHandler extends EventListener<
 
     this.status = ConnectionHandlerStatus.STARTING;
     try {
-      await this.adapter.startP2PInstance({ id: this.id });
+      await this.adapter.startLibP2PInstance({ id: this.id });
     } catch (error) {
       this.status = ConnectionHandlerStatus.STOPPED;
       throw error;
@@ -49,7 +49,7 @@ export class ConnectionHandler extends EventListener<
     this.status = ConnectionHandlerStatus.STOPPING;
 
     try {
-      await this.adapter.stopP2PInstance({ id: this.id });
+      await this.adapter.stopLibP2PInstance({ id: this.id });
     } catch (error) {
       this.status = ConnectionHandlerStatus.STARTED;
       throw error;

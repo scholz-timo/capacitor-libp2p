@@ -12,35 +12,28 @@ public class P2PProviderPlugin: CAPPlugin {
     private let p2pGroupContainer = P2PGroupContainer()
     private let p2pVersionHandlerContainer = P2PVersionHandlerContainer()
 
-    @objc public func createGroup(_ call: CAPPluginCall) throws {
+    @objc public func createGroup(_ call: CAPPluginCall) {
         let name = call.getString("name") ?? ""
-        let rawVersionHandlerIds = call.getArray("versionHandler")?.capacitor.replacingNullValues() as? [String?]
+        let versionHandlerIds = call.getArray("versionHandler")?.capacitor.replacingNullValues() as? [String?] ?? []
         
-        guard name == "" else {
+        guard name != "" else {
             call.reject("You need to enter a name.")
-            return
-        }
-        
-        guard let versionHandlerIds = rawVersionHandlerIds else {
-            call.reject("You need to strings as version handler ids.")
             return
         }
         
         let versionHandlers = self.p2pVersionHandlerContainer.getInstances(array: versionHandlerIds)
         
-        guard versionHandlers.isEmpty else {
+        guard !versionHandlers.isEmpty else {
             call.reject("You need to append at least one version handler.")
             return
         }
-        
-        
         
         call.resolve([
             "id": self.p2pGroupContainer.createInstance(name: name, handlers: versionHandlers).uuidString
         ])
     }
 
-    @objc public func dial(_ call: CAPPluginCall) async throws {
+    @objc public func dial(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         
@@ -49,18 +42,26 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        guard address == "" else {
+        guard address != "" else {
             call.reject("You need to enter a address to connect to.")
             return
         }
         
-        let peerId = try await libP2PInstance.dail(address: address)
-        call.resolve([
-            "id": peerId.b58String
-        ])
+        
+        Task.init {
+            do {
+                let address = try await libP2PInstance.dail(address: address)
+                
+                call.resolve([
+                    "id": address
+                ])
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func hangUp(_ call: CAPPluginCall) async throws {
+    @objc public func hangUp(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         
@@ -69,16 +70,22 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        if (address == "") {
+        guard address != "" else {
             call.reject("You need to enter a address to connect to.")
             return
         }
         
-        try await libP2PInstance.hangUp(address: address)
-        call.resolve()
+        Task.init {
+            do {
+                try await libP2PInstance.hangUp(address: address)
+                call.resolve()
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func closeStream(_ call: CAPPluginCall) async throws {
+    @objc public func closeStream(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         
@@ -87,12 +94,17 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        try await libP2PInstance.closeStream(uuid: streamId)
-
-        call.resolve()
+        Task.init {
+            do {
+                try await libP2PInstance.closeStream(uuid: streamId)
+                call.resolve()
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func getMyConnections(_ call: CAPPluginCall) async throws {
+    @objc public func getMyConnections(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -100,12 +112,18 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        call.resolve([
-            "addresses": try await libP2PInstance.getMyConnections()
-        ])
+        Task.init {
+            do {
+                call.resolve([
+                    "addresses": try await libP2PInstance.getMyConnections()
+                ])
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func getAddresses(_ call: CAPPluginCall) async throws {
+    @objc public func getAddresses(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -113,48 +131,65 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        call.resolve([
-            "addresses": try await libP2PInstance.getAddresses()
-        ])
+        let dpg = DispatchGroup()
+        dpg.enter()
+        Task.init(priority: TaskPriority.high) {
+            do {
+                call.resolve([
+                    "addresses": try await libP2PInstance.getAddresses()
+                ])
+            } catch {
+                call.reject("Error")
+            }
+            
+            dpg.leave()
+        }
+        
+        dpg.wait()
     }
 
-    @objc public func createVersionHandler(_ call: CAPPluginCall) throws {
-        
-        call.resolve([
-            "id": "example-hello-world"
-        ])
+    @objc public func createVersionHandler(_ call: CAPPluginCall) {
         
         let versionIdentification = call.getString("version") ?? ""
         
-        if (versionIdentification == "") {
+        guard versionIdentification != "" else {
             call.reject("You need to enter a version.")
             return
         }
         
-        let uuid = try self.p2pVersionHandlerContainer.createInstance(name: versionIdentification);
-        
-        call.resolve([
-            "id": uuid.uuidString
-        ])
+        do {
+            let uuid = try self.p2pVersionHandlerContainer.createInstance(name: versionIdentification);
+            
+            call.resolve([
+                "id": uuid.uuidString
+            ])
+        } catch {
+            call.reject("internal error \(error)")
+        }
     }
 
-    @objc public func createLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func createLibP2PInstance(_ call: CAPPluginCall) {
         let groupIds = call.getArray("groupIds")?.capacitor.replacingNullValues() as? [String?] ?? []
         
-        call.resolve([
-            "id": try self.p2pProviderContainer.createInstance(groups: self.p2pGroupContainer.getInstances(array: groupIds)).uuidString
-        ])
+        do {
+            call.resolve([
+                "id": try self.p2pProviderContainer.createInstance(groups: self.p2pGroupContainer.getInstances(array: groupIds)).uuidString
+            ])
+        } catch {
+            call.reject("internal error \(error)")
+        }
     }
 
-    @objc public func destroyLibP2PInstance(_ call: CAPPluginCall) async throws {
+    @objc public func destroyLibP2PInstance(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         
-        await self.p2pProviderContainer.removeInstance(uuid: libP2PInstanceId)
-        
-        call.resolve()
+        Task.init {
+            await self.p2pProviderContainer.removeInstance(uuid: libP2PInstanceId)
+            call.resolve()
+        }
     }
 
-    @objc public func startLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func startLibP2PInstance(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -162,11 +197,17 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
 
-        try libP2PInstance.start()
-        call.resolve()
+        DispatchQueue.global().async {
+            do {
+                try libP2PInstance.start()
+                call.resolve()
+            } catch {
+                call.reject("Error")
+            }
+        }
     }
 
-    @objc public func stopLibP2PInstance(_ call: CAPPluginCall) throws {
+    @objc public func stopLibP2PInstance(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         
         guard let libP2PInstance = self.p2pProviderContainer.getInstance(uuid: libP2PInstanceId) else {
@@ -178,7 +219,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc public func createLibP2PStream(_ call: CAPPluginCall) async throws {
+    @objc public func createLibP2PStream(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         let address = call.getString("address") ?? ""
         let groupId = call.getString("groupId") ?? ""
@@ -200,15 +241,25 @@ public class P2PProviderPlugin: CAPPlugin {
         }
         
         
-        let id = try await libP2PInstance.openStream(address: address, forProtocol: group.name + "/" + versionHandler.name)
-        
-        
-        call.resolve([
-            "id": id.uuidString
-        ])
+        Task.init {
+            do {
+                let id = try await libP2PInstance.openStream(address: address, forProtocol: group.name + "/" + versionHandler.name)
+                
+                guard let ensuredUUID = id else {
+                    call.reject("No connection found or internal error")
+                    return
+                }
+                
+                call.resolve([
+                    "id": ensuredUUID.uuidString
+                ])
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func sendDataToStream(_ call: CAPPluginCall) async throws {
+    @objc public func sendDataToStream(_ call: CAPPluginCall) {
         let libP2PInstanceId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         let data = call.getArray("data") ?? []
@@ -218,16 +269,21 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        try await libP2PInstance.getStream(uuid: streamId)?.channel.write(data).get()
-        
-        call.resolve()
+        Task.init {
+            do {
+                try await libP2PInstance.getStream(uuid: streamId)?.channel.write(data).get()
+                call.resolve()
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func destroyLibP2PStream(_ call: CAPPluginCall) async throws {
+    @objc public func destroyLibP2PStream(_ call: CAPPluginCall) {
         let connectionId = call.getString("id") ?? ""
         let streamId = call.getString("streamId") ?? ""
         
-        if (streamId == "") {
+        guard streamId != "" else {
             call.reject("You need to enter a stream instance id.")
             return
         }
@@ -237,16 +293,21 @@ public class P2PProviderPlugin: CAPPlugin {
             return
         }
         
-        try await libP2PInstance.closeStream(uuid: streamId)
-        
-        call.resolve()
+        Task.init {
+            do {
+                try await libP2PInstance.closeStream(uuid: streamId)
+                call.resolve()
+            } catch {
+                call.reject("internal error \(error)")
+            }
+        }
     }
 
-    @objc public func onVersionHandlerUpdate(_ call: CAPPluginCall) throws {
+    @objc public func onVersionHandlerUpdate(_ call: CAPPluginCall) {
         call.keepAlive = true
     }
 
-    @objc public func sendVersionHandlerResponse(_ call: CAPPluginCall) throws {
+    @objc public func sendVersionHandlerResponse(_ call: CAPPluginCall) {
         let versionHandlerId = call.getString("id") ?? ""
         let requestId = call.getString("requestId") ?? ""
         
@@ -260,7 +321,7 @@ public class P2PProviderPlugin: CAPPlugin {
         call.resolve()
     }
 
-    @objc public func createLibP2PStreamListener(_ call: CAPPluginCall) throws {
+    @objc public func createLibP2PStreamListener(_ call: CAPPluginCall) {
         call.keepAlive = true
     }
 }

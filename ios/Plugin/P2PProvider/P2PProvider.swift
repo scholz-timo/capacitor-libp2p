@@ -33,48 +33,73 @@ import LibP2PCore
         self.app.shutdown()
     }
     
-    public func dail(address: String) async throws -> PeerID {
+    public func dail(address: String) async throws -> String {
         let multiaddr = try Multiaddr(address)
-        try await self.app.peers.add(addresses: [multiaddr], toPeer: self.app.peerID).get()
-        let peerInfo = self.app.peers.getPeerInfo(byAddress: multiaddr, on: nil)
-        let unwrappedPeerInfo = try await peerInfo.get()
-        return unwrappedPeerInfo.peer
+        
+        let connection = try await self.app.transports.findBest(forMultiaddr: multiaddr).dial(address: multiaddr).get()
+        
+        return connection.localPeer.b58String
     }
     
     @objc public func hangUp(address: String) async throws {
         let multiaddr = try Multiaddr(address)
-        try await self.app.peers.remove(address: multiaddr, fromPeer: self.app.peerID).get()
+        let allConnections = try await self.app.connections.getConnectionsTo(multiaddr, onlyMuxed: false, on: nil).get()
+        
+        for connection in allConnections {
+            do {
+                try await connection.close().get()
+            } catch {
+                print("error \(error)")
+            }
+        }
     }
     
     @objc public func getAddresses() async throws -> Array<String> {
-        let addresses = try await self.app.peers.getAddresses(forPeer: self.app.peerID).get()
-        
-        return try addresses.compactMap { String(bytes: try $0.binaryPacked(), encoding: .utf8) }
+        return [self.app.peerID.b58String]
     }
     
     @objc public func getMyConnections() async throws -> Array<String> {
-        let myAddresses = try await self.getAddresses()
-        let addresses = try await self.app.peers.all().get().filter {
-            $0.id != self.app.peerID
-        }
         
-        return try addresses.flatMap {
-            return $0.addresses
-        }.compactMap {
-            String(bytes: try $0.binaryPacked(), encoding: .utf8)
+        return try await self.app.connections.getConnections(on: nil).get().compactMap {
+            $0.remoteAddr?.description
         }
+
     }
     
-    public func openStream(address: String, forProtocol: String)async throws -> UUID  {
+    public func openStream(address: String, forProtocol: String) async throws -> UUID?  {
+        do {
+            try await self.dail(address: address)
+        } catch {}
+        
         let multiaddr = try Multiaddr(address)
-        let realAddress = try await self.dail(address: address)
-        let transport = try await self.app.transports.findBest(forMultiaddr: multiaddr).dial(address: multiaddr).get()
-        let stream = try transport.newStreamSync(forProtocol)
+        //let realAddress = try await self.dail(address: address)
+        let transports = try await self.app.connections.getConnectionsTo(multiaddr, onlyMuxed: false, on: nil).get()
         
-        let myUUID = UUID()
-        self.myStreams[myUUID] = StreamContainer(stream: stream)
         
-        return myUUID
+        if transports.isEmpty {
+            print("error no transport found.")
+            return nil
+        }
+        
+        for transport in transports {
+            
+            guard [ConnectionStats.Status.open, ConnectionStats.Status.opening].contains(transport.status) else {
+                continue
+            }
+            
+            do {
+                
+                let result = try await app.newRequest(to: transport.localPeer, forProtocol: forProtocol, withRequest: Data("Hello world".utf8), style: .responseExpected, withHandlers: .inherit).get()
+
+                
+                return myUUID
+            } catch {
+                print("error \(error)")
+                continue
+            }
+        }
+        
+        return nil
     }
     
     public func closeStream(uuid: String) async throws {

@@ -20,8 +20,11 @@ import RoutingKit
         let env = try Environment.detect()
         let app = Application(env)
         
-        app.servers.use(.ws(host: "0.0.0.0", port: 0))
+        app.servers.use( .tcp(host: "0.0.0.0", port: 5555) )
+        app.servers.use( .ws )
 
+        app.clients.use( .tcp )
+        app.transports.use( .tcp )
         app.transports.use( .ws )
 
         app.security.use(.noise)

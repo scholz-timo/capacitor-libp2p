@@ -145,6 +145,15 @@
       }
     },
     {
+      "identity" : "swift-libp2p-tcp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-libp2p/swift-libp2p-tcp.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "797967ad34fd15dfd09f45aa722a773bf8d852de"
+      }
+    },
+    {
       "identity" : "swift-libp2p-websocket",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-libp2p/swift-libp2p-websocket.git",

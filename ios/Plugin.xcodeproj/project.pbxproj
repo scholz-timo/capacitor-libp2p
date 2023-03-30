@@ -16,6 +16,7 @@
 		50ADFFA42020D75100D50D53 /* Capacitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFFA52020D75100D50D53 /* Capacitor.framework */; };
 		50ADFFA82020EE4F00D50D53 /* P2PProviderPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFFA72020EE4F00D50D53 /* P2PProviderPlugin.m */; };
 		50E1A94820377CB70090CE1A /* P2PProviderPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E1A94720377CB70090CE1A /* P2PProviderPlugin.swift */; };
+		99681BA529D2D81D00C6B58A /* LibP2PTCP in Frameworks */ = {isa = PBXBuildFile; productRef = 99681BA429D2D81D00C6B58A /* LibP2PTCP */; };
 		99D08FD429CCCFCA004D98C6 /* P2PProviderContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D08FD329CCCFCA004D98C6 /* P2PProviderContainer.swift */; };
 		99D08FD729CCD141004D98C6 /* LibP2PNoise in Frameworks */ = {isa = PBXBuildFile; productRef = 99D08FD629CCD141004D98C6 /* LibP2PNoise */; };
 		99D08FDA29CCD173004D98C6 /* LibP2PMPLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 99D08FD929CCD173004D98C6 /* LibP2PMPLEX */; };
@@ -68,6 +69,7 @@
 				99D08FDA29CCD173004D98C6 /* LibP2PMPLEX in Frameworks */,
 				50ADFFA42020D75100D50D53 /* Capacitor.framework in Frameworks */,
 				03FC29A292ACC40490383A1F /* Pods_Plugin.framework in Frameworks */,
+				99681BA529D2D81D00C6B58A /* LibP2PTCP in Frameworks */,
 				99D08FD729CCD141004D98C6 /* LibP2PNoise in Frameworks */,
 				99DA95FA29AD44FF0007AE10 /* LibP2PWebSocket in Frameworks */,
 			);
@@ -193,6 +195,7 @@
 				99DA95F929AD44FF0007AE10 /* LibP2PWebSocket */,
 				99D08FD629CCD141004D98C6 /* LibP2PNoise */,
 				99D08FD929CCD173004D98C6 /* LibP2PMPLEX */,
+				99681BA429D2D81D00C6B58A /* LibP2PTCP */,
 			);
 			productName = Plugin;
 			productReference = 50ADFF88201F53D600D50D53 /* Plugin.framework */;
@@ -253,6 +256,7 @@
 				99DA95F829AD44FF0007AE10 /* XCRemoteSwiftPackageReference "swift-libp2p-websocket" */,
 				99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */,
 				99D08FD829CCD173004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-mplex" */,
+				99681BA329D2D81D00C6B58A /* XCRemoteSwiftPackageReference "swift-libp2p-tcp" */,
 			);
 			productRefGroup = 50ADFF89201F53D600D50D53 /* Products */;
 			projectDirPath = "";
@@ -633,6 +637,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		99681BA329D2D81D00C6B58A /* XCRemoteSwiftPackageReference "swift-libp2p-tcp" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swift-libp2p/swift-libp2p-tcp.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swift-libp2p/swift-libp2p-noise";
@@ -660,6 +672,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		99681BA429D2D81D00C6B58A /* LibP2PTCP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 99681BA329D2D81D00C6B58A /* XCRemoteSwiftPackageReference "swift-libp2p-tcp" */;
+			productName = LibP2PTCP;
+		};
 		99D08FD629CCD141004D98C6 /* LibP2PNoise */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 99D08FD529CCD141004D98C6 /* XCRemoteSwiftPackageReference "swift-libp2p-noise" */;

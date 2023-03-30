@@ -137,6 +137,7 @@ const showMessage = message => {
   // Start connecting, when addresses are provided & start handling connections all together.
   showMessage('Starting connection handler...');
   await connectionHandler.start();
+  showMessage("Started connection handler...");
 
   const addresses = await connectionHandler.getAddresses();
   addresses.forEach(address => {

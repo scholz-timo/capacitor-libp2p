@@ -107,14 +107,14 @@ export interface P2PProviderAdapter extends Plugin {
    *
    * @param value.id The id of the core(LibP2P) instance to start.
    */
-  startP2PInstance(value: { id: string }): Promise<void>;
+  startLibP2PInstance(value: { id: string }): Promise<void>;
 
   /**
    * Stops accepting/sending connections.
    *
    * @param value.id The id of the core(LibP2P) instance to start.
    */
-  stopP2PInstance(value: { id: string }): Promise<void>;
+  stopLibP2PInstance(value: { id: string }): Promise<void>;
 
   /**
    * Creates a new stream for a given core(LibP2P) instance.
